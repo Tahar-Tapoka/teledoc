@@ -1,0 +1,38 @@
+export const colors = {
+  primary: "#FF55BB",
+  accent: "#36D1C4",
+  background: "#C2F2F2",
+  surface: "#36D1C4",
+  text: "#1EAE98",
+  disabled: "#C6DAF7",
+  placeholder: "#EB6383",
+  backdrop: "#757575",
+  onSurface: "#757575",
+  notification: "#36D1C4",
+  // brand: {
+  //   primary: "#696AC3",
+  //   secondary: "#5D6CC6",
+  //   muted: "#C6DAF7",
+  // },
+  // ui: {
+  //   primary: "#262626",
+  //   secondary: "#757575",
+  //   tertiary: "#F1F1F1",
+  //   quaternary: "#FFFFFF",
+  //   disabled: "#DEDEDE",
+  //   error: "#D0421B",
+  //   success: "#138000",
+  // },
+  // bg: {
+  //   primary: "#FFFFFF",
+  //   secondary: "#F1F1F1",
+  // },
+  // txt: {
+  //   primary: "#262626",
+  //   secondary: "#757575",
+  //   disabled: "#9C9C9C",
+  //   inverse: "#FFFFFF",
+  //   error: "#D0421B",
+  //   success: "#138000",
+  // },
+};
