@@ -6,7 +6,7 @@ import {
   ThemeButton,
   ThemeButtonText,
   ThemeInput,
-} from "../infrastructure/theme";
+} from "../../infrastructure/theme";
 import { RadioButton } from "react-native-paper";
 
 const RegistrationScreen = () => {
