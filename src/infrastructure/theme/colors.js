@@ -9,6 +9,8 @@ export const colors = {
   backdrop: "#757575",
   onSurface: "#757575",
   notification: "#36D1C4",
+  error: "#D0421B",
+  success: "#138000",
   // brand: {
   //   primary: "#696AC3",
   //   secondary: "#5D6CC6",

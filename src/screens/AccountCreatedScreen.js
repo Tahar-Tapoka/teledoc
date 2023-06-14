@@ -8,13 +8,13 @@ import {
   theme,
 } from "../infrastructure/theme";
 import { Avatar } from "react-native-paper";
-
+import Auth from "@aws-amplify/auth";
 const AccountCreatedScreen = () => {
   return (
     <Container>
       <Avatar.Image
         size={300}
-        source={require("../assets/thumb.png")}
+        source={require("../../assets/thumb.png")}
         style={{ backgroundColor: theme.colors.background }}
       />
 
@@ -26,6 +26,7 @@ const AccountCreatedScreen = () => {
       <ThemeButton
         onPress={() => {
           console.log("yaaaaaay");
+          Auth.signOut();
         }}
       >
         <ThemeButtonText>Get Started</ThemeButtonText>
