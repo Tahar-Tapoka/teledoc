@@ -7,7 +7,12 @@ import config from "./src/aws-exports";
 import { theme } from "./src/infrastructure/theme";
 import AccountCreatedScreen from "./src/screens/AccountCreatedScreen";
 
-Amplify.configure(config);
+Amplify.configure({
+  ...config,
+  Analytics: {
+    disabled: true,
+  },
+});
 function App() {
   return (
     <PaperProvider theme={theme}>
