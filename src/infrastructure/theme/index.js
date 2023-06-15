@@ -16,20 +16,26 @@ export const theme = {
   roundness: 2,
 };
 
-export const ThemeButton = styled(Button).attrs({ mode: "contained" })`
+export const ThemeButton = styled(Button).attrs({
+  mode: "contained",
+  // textColor: "#F1F1F1",
+})`
   width: 80%;
-  margin: ${space[4]}px;
+  margin: ${space[1]}px;
 `;
-export const ThemeInput = styled(TextInput).attrs({ type: "outlined" })`
+export const ThemeInput = styled(TextInput).attrs({
+  type: "outlined",
+  // contentStyle: { backgroundColor: colors.backdrop },
+})`
   width: 80%;
-  margin-top: ${space[4]}px;
+  height: 50px;
+  margin-vertical: ${space[2]}px;
+  background-color: ${colors.surface};
 `;
-export const Container = styled.SafeAreaView`
-  background-color: ${colors.background};
+export const ThemeView = styled.View`
   flex: 1;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
+  background-color: ${colors.background};
 `;
 export const RowContainer = styled.View`
   display: flex;
@@ -41,14 +47,25 @@ export const RowContainer = styled.View`
 `;
 export const ThemeButtonText = styled.Text`
   font-size: 16px;
+  font-weight: ${fontWeights.bold};
   color: #fff;
 `;
 export const TitleText = styled.Text`
   font-weight: ${fontWeights.medium};
   font-size: ${fontSizes.title}px;
   color: ${colors.text};
-  margin-top: ${space[5]}px;
 `;
+export const Container = styled.View`
+  flex: 1;
+  background-color: ${colors.background};
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+export const Spacer = styled.View`
+  margin-vertical: ${(props) => space[props.size]}px;
+`;
+
 export const PostContainer = styled.View`
   padding: 10px 20px;
   width: 100%;

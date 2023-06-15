@@ -1,0 +1,140 @@
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { PaperProvider } from "react-native-paper";
+import { Amplify } from "aws-amplify";
+import { withAuthenticator, AmplifyTheme } from "aws-amplify-react-native";
+import config from "./src/aws-exports";
+import { theme } from "./src/infrastructure/theme";
+import AccountCreatedScreen from "./src/screens/AccountCreatedScreen";
+import RegistrationScreen from "./src/screens/RegistrationScreen";
+
+Amplify.configure({
+  ...config,
+  Analytics: {
+    disabled: true,
+  },
+});
+function App() {
+  return (
+    <PaperProvider theme={theme}>
+      <View style={styles.container}>
+        {/* <LoginScreen /> */}
+        <RegistrationScreen />
+        {/* <AccountCreatedScreen /> */}
+        <StatusBar style="auto" />
+      </View>
+    </PaperProvider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+
+    // backgroundColor: "#fff",
+    // alignItems: "center",
+    // justifyContent: "center",
+  },
+});
+
+const signUpConfig = {
+  header: "Sign Up",
+  hideAllDefaults: true,
+  signUpFields: [
+    {
+      label: "Full name",
+      key: "name",
+      required: true,
+      displayOrder: 1,
+      type: "string",
+    },
+    {
+      label: "Email",
+      key: "email",
+      required: true,
+      displayOrder: 2,
+      type: "string",
+    },
+    {
+      label: "Username",
+      key: "preferred_username",
+      required: true,
+      displayOrder: 3,
+      type: "string",
+    },
+    {
+      label: "Password",
+      key: "password",
+      required: true,
+      displayOrder: 4,
+      type: "password",
+    },
+  ],
+};
+
+const customTheme = {
+  ...AmplifyTheme,
+  container: {
+    ...AmplifyTheme.container,
+    backgroundColor: theme.colors.background,
+  },
+  sectionHeaderText: {
+    color: theme.colors.text,
+    fontSize: 24,
+    fontWeight: "500",
+    alignSelf: "center",
+  },
+  sectionFooterLink: {
+    ...AmplifyTheme.sectionFooterLink,
+    color: theme.colors.text,
+    fontWeight: "500",
+  },
+  sectionFooterLinkDisabled: {
+    ...AmplifyTheme.sectionFooterLinkDisabled,
+    color: theme.colors.disabled,
+  },
+  // errorRowText: {
+  //   marginLeft: 10,
+  // },
+  button: {
+    ...AmplifyTheme.button,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 10,
+  },
+  buttonDisabled: {
+    ...AmplifyTheme.buttonDisabled,
+    backgroundColor: theme.colors.disabled,
+  },
+  // buttonText: {
+  //   color: "#fff",
+  //   fontSize: 14,
+  //   fontWeight: "600",
+  // },
+  // formField: {
+  //   marginBottom: 22,
+  // },
+  input: {
+    padding: 16,
+    borderBottomWidth: 3,
+    borderRadius: 3,
+    borderColor: theme.colors.accent,
+    color: theme.colors.primary,
+    backgroundColor: theme.colors.disabled,
+  },
+  // inputLabel: {
+  //   marginBottom: 8,
+  // },
+  linkUnderlay: {
+    color: theme.colors.backdrop,
+  },
+  phoneInput: {
+    flex: 2,
+    padding: 16,
+    borderBottomWidth: 3,
+    borderRadius: 3,
+    borderColor: theme.colors.accent,
+    color: theme.colors.primary,
+    backgroundColor: theme.colors.disabled,
+  },
+};
+export default withAuthenticator(App, { signUpConfig, theme: customTheme });

@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import React, { useState } from "react";
 import {
   Container,
@@ -6,7 +6,7 @@ import {
   ThemeButton,
   ThemeButtonText,
   ThemeInput,
-} from "../../infrastructure/theme";
+} from "../infrastructure/theme";
 import { RadioButton } from "react-native-paper";
 
 const RegistrationScreen = () => {

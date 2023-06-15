@@ -24,9 +24,10 @@ const AccountCreatedScreen = () => {
         Your account had been created succefully
       </Text>
       <ThemeButton
+        textColor="#F1F1F1"
         onPress={() => {
           console.log("yaaaaaay");
-          Auth.signOut();
+          // Auth.signOut();
         }}
       >
         <ThemeButtonText>Get Started</ThemeButtonText>
