@@ -24,18 +24,34 @@ import {
 } from "../infrastructure/theme";
 import { Avatar, SegmentedButtons } from "react-native-paper";
 import SegmentedButton from "../components/SegmentedButton";
+import { Auth } from "aws-amplify";
+import { Alert } from "react-native";
 
 const SignInScreen = () => {
   const [user, setUser] = useState("Patient");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
+  const [loading, setLoading] = useState(false);
 
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
 
-  const onSignInPressed = () => {
+  const onSignInPressed = async (username, password) => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const response = await Auth.signIn(username, password);
+      console.log(response);
+    } catch (err) {
+      Alert.alert("Oops", err.message);
+      setMobile("");
+      setPassword("");
+      setErrorMessage(err.message);
+    }
+    setLoading(false);
     // validate user
-    navigation.navigate("Home");
+    // navigation.navigate("Home");
   };
 
   const onForgotPasswordPressed = () => {
@@ -70,11 +86,15 @@ const SignInScreen = () => {
           onChangeText={(pass) => setPassword(pass)}
           secureTextEntry
         />
+        {errorMessage && (
+          <Text style={{ color: theme.colors.error }}>{errorMessage}</Text>
+        )}
 
         <ThemeButton
-          onPress={onSignInPressed}
-          icon="login-variant"
+          onPress={() => onSignInPressed(mobile, password)}
+          icon={loading ? null : "login-variant"}
           textColor="#F1F1F1"
+          loading={loading}
         >
           <ThemeButtonText>Sign In</ThemeButtonText>
         </ThemeButton>

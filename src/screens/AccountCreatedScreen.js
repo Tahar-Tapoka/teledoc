@@ -8,8 +8,11 @@ import {
   theme,
 } from "../infrastructure/theme";
 import { Avatar } from "react-native-paper";
-import Auth from "@aws-amplify/auth";
+import { Auth } from "@aws-amplify/auth";
+import { useNavigation } from "@react-navigation/native";
 const AccountCreatedScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <Container>
       <Avatar.Image
@@ -27,7 +30,8 @@ const AccountCreatedScreen = () => {
         textColor="#F1F1F1"
         onPress={() => {
           console.log("yaaaaaay");
-          // Auth.signOut();
+          Auth.signOut();
+          navigation.navigate("SignIn");
         }}
       >
         <ThemeButtonText>Get Started</ThemeButtonText>
