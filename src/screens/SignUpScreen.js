@@ -18,34 +18,41 @@ import { Avatar } from "react-native-paper";
 import Logo from "../../assets/avatar.png";
 import { Auth } from "aws-amplify";
 import { Alert } from "react-native";
+import { useForm } from "react-hook-form";
+
+const EMAIL_REGEX =
+  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const MOBILE_REGEX = /^\+213[5-7][0-9]{8}$/;
 
 const SignUpScreen = () => {
-  const [mobile, setMobile] = useState("");
-  const [username, setUsername] = useState("");
+  // const [mobile, setMobile] = useState("");
+  // const [username, setUsername] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [passwordRepeat, setPasswordRepeat] = useState("");
+  // const [errorMessage, setErrorMessage] = useState();
   const [user, setUser] = useState("Patient");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordRepeat, setPasswordRepeat] = useState("");
-  const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
 
+  const { control, handleSubmit, watch } = useForm();
+  const pwd = watch("password");
   const navigation = useNavigation();
 
-  const onRegisterPressed = async () => {
-    const mob = "+213".concat(mobile.slice(1));
+  const onRegisterPressed = async (data) => {
+    const { username, password, email, name } = data;
+
+    // const mob = "+213".concat(mobile.slice(1));
     if (loading) return;
     setLoading(true);
     try {
       await Auth.signUp({
-        username: mob,
+        username,
         password,
-        attributes: { email, name: username },
+        attributes: { email, name },
       });
-      navigation.navigate("ConfirmEmail", { mob });
+      navigation.navigate("ConfirmEmail", { username });
     } catch (err) {
       Alert.alert("Oops", err.message);
-      setPassword("");
-      setErrorMessage(err.message);
     }
     setLoading(false);
     // console.log(mob);
@@ -79,62 +86,69 @@ const SignUpScreen = () => {
           <SegmentedButton user={user} setUser={setUser} />
         </View>
 
-        <ThemeInput
-          label="Mobile Number"
-          value={mobile}
-          onChangeText={(mobile) => setMobile(mobile)}
+        <CustomInput
+          name="name"
+          control={control}
+          label="Name"
+          rules={{
+            required: "Name is required",
+            minLength: {
+              value: 3,
+              message: "Name should be at least 3 characters long",
+            },
+            maxLength: {
+              value: 24,
+              message: "Name should be max 24 characters long",
+            },
+          }}
+        />
+        <CustomInput
           keyboardType="phone-pad"
-          error={mobile && errorMessage}
-          // style={
-          //   mobile || !errorMessage
-          //     ? null
-          //     : { backgroundColor: theme.colors.error }
-          // }
+          name="username"
+          control={control}
+          label="Mobile Number"
+          rules={{
+            required: "Mobile Number is required",
+            pattern: {
+              value: MOBILE_REGEX,
+              message: "Phone Number is invalid",
+            },
+          }}
         />
-        <ThemeInput
-          label="Username"
-          value={username}
-          onChangeText={(username) => setUsername(username)}
-          style={
-            username || !errorMessage
-              ? null
-              : { backgroundColor: theme.colors.error }
-          }
-        />
-        <ThemeInput
+        <CustomInput
+          name="email"
+          control={control}
           label="Email"
-          value={email}
-          onChangeText={(email) => setEmail(email)}
-          style={
-            email || !errorMessage
-              ? null
-              : { backgroundColor: theme.colors.error }
-          }
+          rules={{
+            required: "Email is required",
+            pattern: { value: EMAIL_REGEX, message: "Email is invalid" },
+          }}
         />
-        <ThemeInput
+        <CustomInput
+          name="password"
+          control={control}
           label="Password"
-          value={password}
           secureTextEntry
-          onChangeText={(password) => setPassword(password)}
-          style={
-            password || !errorMessage
-              ? null
-              : { backgroundColor: theme.colors.error }
-          }
+          rules={{
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password should be at least 8 characters long",
+            },
+          }}
         />
-        <ThemeInput
+        <CustomInput
+          name="password-repeat"
+          control={control}
           label="Repeat Password"
-          value={passwordRepeat}
           secureTextEntry
-          onChangeText={(password) => setPasswordRepeat(password)}
-          style={
-            passwordRepeat || !errorMessage
-              ? null
-              : { backgroundColor: theme.colors.error }
-          }
+          rules={{
+            validate: (value) => value === pwd || "Password do not match",
+          }}
         />
+
         <ThemeButton
-          onPress={onRegisterPressed}
+          onPress={handleSubmit(onRegisterPressed)}
           icon={loading ? null : "account-plus"}
           textColor="#F1F1F1"
           loading={loading}

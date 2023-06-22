@@ -26,28 +26,30 @@ import { Avatar, SegmentedButtons } from "react-native-paper";
 import SegmentedButton from "../components/SegmentedButton";
 import { Auth } from "aws-amplify";
 import { Alert } from "react-native";
+import { useForm } from "react-hook-form";
 
 const SignInScreen = () => {
   const [user, setUser] = useState("Patient");
-  const [mobile, setMobile] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState();
+  // const [mobile, setMobile] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [errorMessage, setErrorMessage] = useState();
   const [loading, setLoading] = useState(false);
 
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const onSignInPressed = async (username, password) => {
+  const onSignInPressed = async (data) => {
     if (loading) return;
     setLoading(true);
     try {
-      const response = await Auth.signIn(username, password);
-      console.log(response);
+      await Auth.signIn(data.username, data.password);
     } catch (err) {
       Alert.alert("Oops", err.message);
-      setMobile("");
-      setPassword("");
-      setErrorMessage(err.message);
     }
     setLoading(false);
     // validate user
@@ -63,10 +65,7 @@ const SignInScreen = () => {
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={{ backgroundColor: theme.colors.background, flex: 1 }}
-    >
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
       <Avatar.Image size={120} source={Logo} style={styles.logo} />
       <SegmentedButton user={user} setUser={setUser} />
 
@@ -74,26 +73,28 @@ const SignInScreen = () => {
         <Spacer size={3} />
         <TitleText>{user} Login</TitleText>
         <Spacer size={2} />
-        <ThemeInput
+        <CustomInput
+          name="username"
           label="Mobile Number"
-          value={mobile}
-          onChangeText={(mobile) => setMobile(mobile)}
-          keyboardType="numeric"
-          style={!errorMessage ? null : { backgroundColor: theme.colors.error }}
+          control={control}
+          rules={{ required: "Username is required" }}
         />
-        <ThemeInput
+        <CustomInput
+          name="password"
           label="Password"
-          value={password}
-          onChangeText={(pass) => setPassword(pass)}
           secureTextEntry
-          style={!errorMessage ? null : { backgroundColor: theme.colors.error }}
+          control={control}
+          rules={{
+            required: "Password is required",
+            minLength: {
+              value: 6,
+              message: "Password should be minimum 6 characters long",
+            },
+          }}
         />
-        {errorMessage && (
-          <Text style={{ color: theme.colors.error }}>{errorMessage}</Text>
-        )}
 
         <ThemeButton
-          onPress={() => onSignInPressed(mobile, password)}
+          onPress={handleSubmit(onSignInPressed)}
           icon={loading ? null : "login-variant"}
           textColor="#F1F1F1"
           loading={loading}
@@ -120,18 +121,12 @@ const SignInScreen = () => {
 
 const styles = StyleSheet.create({
   root: {
-    alignItems: "center",
-    padding: 20,
+    backgroundColor: theme.colors.background,
+    flex: 1,
   },
   logo: {
     marginTop: theme.space[6],
     alignSelf: "center",
-  },
-  segmentBtn: {
-    borderWidth: 0,
-    backgroundColor: theme.colors.background,
-    elevation: 5,
-    marginTop: theme.space[3],
   },
 });
 
