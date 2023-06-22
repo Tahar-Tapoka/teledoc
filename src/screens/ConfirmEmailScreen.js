@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/core";
+import { useRoute } from "@react-navigation/native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import {
@@ -12,14 +13,23 @@ import {
   TitleText,
   theme,
 } from "../infrastructure/theme";
+import { Alert } from "react-native";
+import { Auth } from "aws-amplify";
 
 const ConfirmEmailScreen = () => {
   const [code, setCode] = useState("");
+  const route = useRoute();
 
   const navigation = useNavigation();
 
-  const onConfirmPressed = () => {
-    navigation.navigate("Home");
+  const onConfirmPressed = async () => {
+    try {
+      const response = await Auth.confirmSignUp(route?.params?.mob, code);
+      console.log(response);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
+    // navigation.navigate("Home");
   };
 
   const onSignInPress = () => {

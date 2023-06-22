@@ -16,6 +16,8 @@ import {
 import SegmentedButton from "../components/SegmentedButton";
 import { Avatar } from "react-native-paper";
 import Logo from "../../assets/avatar.png";
+import { Auth } from "aws-amplify";
+import { Alert } from "react-native";
 
 const SignUpScreen = () => {
   const [mobile, setMobile] = useState("");
@@ -24,11 +26,30 @@ const SignUpScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
-  const onRegisterPressed = () => {
-    navigation.navigate("ConfirmEmail");
+  const onRegisterPressed = async () => {
+    const mob = "+213".concat(mobile.slice(1));
+    if (loading) return;
+    setLoading(true);
+    try {
+      await Auth.signUp({
+        username: mob,
+        password,
+        attributes: { email, name: username },
+      });
+      navigation.navigate("ConfirmEmail", { mob });
+    } catch (err) {
+      Alert.alert("Oops", err.message);
+      setPassword("");
+      setErrorMessage(err.message);
+    }
+    setLoading(false);
+    // console.log(mob);
+    // navigation.navigate("ConfirmEmail");
   };
 
   const onSignInPress = () => {
@@ -62,34 +83,61 @@ const SignUpScreen = () => {
           label="Mobile Number"
           value={mobile}
           onChangeText={(mobile) => setMobile(mobile)}
-          keyboardType="numeric"
+          keyboardType="phone-pad"
+          error={mobile && errorMessage}
+          // style={
+          //   mobile || !errorMessage
+          //     ? null
+          //     : { backgroundColor: theme.colors.error }
+          // }
         />
         <ThemeInput
           label="Username"
           value={username}
           onChangeText={(username) => setUsername(username)}
+          style={
+            username || !errorMessage
+              ? null
+              : { backgroundColor: theme.colors.error }
+          }
         />
         <ThemeInput
           label="Email"
           value={email}
           onChangeText={(email) => setEmail(email)}
+          style={
+            email || !errorMessage
+              ? null
+              : { backgroundColor: theme.colors.error }
+          }
         />
         <ThemeInput
           label="Password"
           value={password}
           secureTextEntry
           onChangeText={(password) => setPassword(password)}
+          style={
+            password || !errorMessage
+              ? null
+              : { backgroundColor: theme.colors.error }
+          }
         />
         <ThemeInput
           label="Repeat Password"
           value={passwordRepeat}
           secureTextEntry
           onChangeText={(password) => setPasswordRepeat(password)}
+          style={
+            passwordRepeat || !errorMessage
+              ? null
+              : { backgroundColor: theme.colors.error }
+          }
         />
         <ThemeButton
           onPress={onRegisterPressed}
-          icon="account-plus"
+          icon={loading ? null : "account-plus"}
           textColor="#F1F1F1"
+          loading={loading}
         >
           <ThemeButtonText>Register</ThemeButtonText>
         </ThemeButton>

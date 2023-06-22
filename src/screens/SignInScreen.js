@@ -79,12 +79,14 @@ const SignInScreen = () => {
           value={mobile}
           onChangeText={(mobile) => setMobile(mobile)}
           keyboardType="numeric"
+          style={!errorMessage ? null : { backgroundColor: theme.colors.error }}
         />
         <ThemeInput
           label="Password"
           value={password}
           onChangeText={(pass) => setPassword(pass)}
           secureTextEntry
+          style={!errorMessage ? null : { backgroundColor: theme.colors.error }}
         />
         {errorMessage && (
           <Text style={{ color: theme.colors.error }}>{errorMessage}</Text>
