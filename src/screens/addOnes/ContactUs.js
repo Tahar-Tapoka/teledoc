@@ -10,12 +10,11 @@ import {
 const ContactUs = () => {
   const email = "teleDoc@teleDoc.com";
   const mobile = "+213666666666";
-  const address = "21 rue du Flan, Alger, Algerie";
+  const address = "21 rue du Flan, Alger";
   return (
     <View style={{ backgroundColor: theme.colors.background, flex: 1 }}>
-      <Spacer size={6}>
-        <TitleText style={{ alignSelf: "center" }}>Contact Us</TitleText>
-      </Spacer>
+      <Spacer size={5} />
+      <TitleText style={{ alignSelf: "center" }}>Contact Us</TitleText>
       <RowContainer>
         <TitleText>Email : </TitleText>
         <Text style={styles.txt}>{email}</Text>
@@ -24,7 +23,7 @@ const ContactUs = () => {
         <TitleText>Mobile : </TitleText>
         <Text style={styles.txt}>{mobile}</Text>
       </RowContainer>
-      <RowContainer style={{ alignItems: "flex-start" }}>
+      <RowContainer style={{ alignItems: "center" }}>
         <TitleText>Address : </TitleText>
         <Text style={styles.txt}>{address}</Text>
       </RowContainer>
@@ -38,6 +37,6 @@ const styles = StyleSheet.create({
   txt: {
     color: theme.colors.primary,
     fontSize: theme.fontSizes.h4,
-    fontWeight: theme.fontWeights.bold,
+    // fontWeight: theme.fontWeights.bold,
   },
 });

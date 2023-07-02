@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/core";
+import { Auth } from "aws-amplify";
 import {
   Spacer,
   ThemeButton,
@@ -9,14 +10,22 @@ import {
   ThemeView,
   TitleText,
 } from "../../infrastructure/theme";
+import { Alert } from "react-native";
+import { useForm } from "react-hook-form";
+import CustomInput from "../../components/CustomInput";
 
 const ForgotPasswordScreen = () => {
-  const [mobile, setMobile] = useState("");
+  const { control, handleSubmit } = useForm();
 
   const navigation = useNavigation();
 
-  const onSendPressed = () => {
-    navigation.navigate("NewPassword");
+  const onSendPressed = async (data) => {
+    try {
+      await Auth.forgotPassword(data.username);
+      navigation.navigate("NewPassword", { username: data.username });
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
   };
 
   const onSignInPress = () => {
@@ -28,14 +37,17 @@ const ForgotPasswordScreen = () => {
       <Spacer size={4} />
       <TitleText>Reset your password</TitleText>
       <Spacer size={6} />
-      <ThemeInput
-        label="Mobile Number"
-        value={mobile}
-        onChangeText={(mobile) => setMobile(mobile)}
-        keyboardType="numeric"
+      <CustomInput
+        name="username"
+        control={control}
+        label="Mobile number"
+        rules={{
+          required: "Username is required",
+        }}
+        keyboardType="phone-pad"
       />
       <ThemeButton
-        onPress={onSendPressed}
+        onPress={handleSubmit(onSendPressed)}
         icon="send-check"
         textColor="#F1F1F1"
       >

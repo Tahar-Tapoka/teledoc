@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@azure/core-asynciterator-polyfill": "^1.0.2",
     "@formatjs/intl-datetimeformat": "^6.8.0",
     "@formatjs/intl-displaynames": "^6.3.2",
     "@formatjs/intl-getcanonicallocales": "^2.2.0",

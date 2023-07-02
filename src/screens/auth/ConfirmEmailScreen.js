@@ -13,29 +13,36 @@ import {
 } from "../../infrastructure/theme";
 import { Alert } from "react-native";
 import { Auth } from "aws-amplify";
+import { useForm } from "react-hook-form";
 
 const ConfirmEmailScreen = () => {
+  const { control, handleSubmit } = useForm();
+
   const [code, setCode] = useState("");
   const route = useRoute();
 
   const navigation = useNavigation();
 
-  const onConfirmPressed = async () => {
+  const onConfirmPressed = async (data) => {
     try {
-      const response = await Auth.confirmSignUp(route?.params?.mob, code);
-      console.log(response);
+      await Auth.confirmSignUp(route?.params?.username, data.code);
+      navigation.navigate("SignIn"); // should show home with the new user
     } catch (e) {
       Alert.alert("Oops", e.message);
     }
-    // navigation.navigate("Home");
   };
 
   const onSignInPress = () => {
     navigation.navigate("SignIn");
   };
 
-  const onResendPress = () => {
-    console.warn("onResendPress");
+  const onResendPress = async () => {
+    try {
+      await Auth.resendSignUp(route?.params?.username);
+      Alert.alert("Code resent", "Check your messages for the new code");
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
   };
 
   return (
@@ -43,13 +50,17 @@ const ConfirmEmailScreen = () => {
       <Spacer size={6}>
         <TitleText>Confirm your email</TitleText>
       </Spacer>
-      <ThemeInput
-        label="Confirmation Code"
-        value={code}
-        onChangeText={(code) => setCode(code)}
+      <CustomInput
+        name="code"
+        control={control}
+        keyboardType="numeric"
+        label="Enter your confirmation code"
+        rules={{
+          required: "Confirmation code is required",
+        }}
       />
       <ThemeButton
-        onPress={onConfirmPressed}
+        onPress={handleSubmit(onConfirmPressed)}
         icon="check-bold"
         textColor="#F1F1F1"
       >

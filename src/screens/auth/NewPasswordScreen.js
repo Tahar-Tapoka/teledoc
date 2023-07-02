@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CustomButton from "../../components/CustomButton";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Auth } from "aws-amplify";
 import {
   Spacer,
   ThemeButton,
@@ -9,15 +10,28 @@ import {
   ThemeView,
   TitleText,
 } from "../../infrastructure/theme";
+import { useForm } from "react-hook-form";
+import CustomInput from "../../components/CustomInput";
+import { Alert } from "react-native";
 
 const NewPasswordScreen = () => {
-  const [code, setCode] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const { control, handleSubmit, watch } = useForm();
+  const pwd = watch("password");
 
   const navigation = useNavigation();
+  const route = useRoute();
 
-  const onSubmitPressed = () => {
-    navigation.navigate("Home");
+  const onSubmitPressed = async (data) => {
+    try {
+      await Auth.forgotPasswordSubmit(
+        route?.params.username,
+        data.code,
+        data.password
+      );
+      navigation.navigate("SignIn"); //sould be home screen for current user
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
   };
 
   const onSignInPress = () => {
@@ -29,21 +43,40 @@ const NewPasswordScreen = () => {
       <Spacer size={4} />
       <TitleText>Reset your password</TitleText>
       <Spacer size={6} />
-      <ThemeInput
+      <CustomInput
+        name="code"
+        control={control}
         label="Confirmation Code"
-        value={code}
-        onChangeText={(code) => setCode(code)}
+        rules={{
+          required: "Confirmation Code is required",
+        }}
         keyboardType="numeric"
       />
-      <ThemeInput
-        label="New password"
-        value={newPassword}
-        onChangeText={(pw) => setNewPassword(pw)}
+      <CustomInput
+        name="password"
+        control={control}
+        label="New Password"
         secureTextEntry
+        rules={{
+          required: "Password is required",
+          minLength: {
+            value: 8,
+            message: "Password should be at least 8 characters long",
+          },
+        }}
+      />
+      <CustomInput
+        name="password-repeat"
+        control={control}
+        label="Repeat Password"
+        secureTextEntry
+        rules={{
+          validate: (value) => value === pwd || "Password do not match",
+        }}
       />
 
       <ThemeButton
-        onPress={onSubmitPressed}
+        onPress={handleSubmit(onSubmitPressed)}
         icon="check-bold"
         textColor="#F1F1F1"
       >

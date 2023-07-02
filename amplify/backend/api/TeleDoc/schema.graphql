@@ -1,0 +1,20 @@
+enum Gender {
+  MALE
+  FEMALE
+}
+
+type Patient @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  mobile: String!
+  full_name: String!
+  gender: Gender!
+  sub: String!
+  date_of_birth: AWSDate
+  lat: Float
+  lng: Float
+  email: AWSEmail
+  address: String
+  picture: String
+  username: String
+}
+ 

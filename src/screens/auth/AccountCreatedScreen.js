@@ -9,9 +9,9 @@ import {
 import { Avatar } from "react-native-paper";
 import { Auth } from "@aws-amplify/auth";
 import { useNavigation } from "@react-navigation/native";
-const AccountCreatedScreen = () => {
+const AccountCreatedScreen = ({ route }) => {
   const navigation = useNavigation();
-
+  const user = route.params.user;
   return (
     <Container>
       <Avatar.Image
@@ -20,7 +20,7 @@ const AccountCreatedScreen = () => {
         style={{ backgroundColor: theme.colors.background }}
       />
 
-      <TitleText>Account Created!</TitleText>
+      <TitleText>Account Created! {user}</TitleText>
 
       <Text style={{ color: theme.colors.backdrop }}>
         Your account had been created succefully
@@ -29,11 +29,17 @@ const AccountCreatedScreen = () => {
         textColor="#F1F1F1"
         onPress={() => {
           console.log("yaaaaaay");
-          Auth.signOut();
-          navigation.navigate("SignIn");
         }}
       >
         <ThemeButtonText>Get Started</ThemeButtonText>
+      </ThemeButton>
+      <ThemeButton
+        onPress={() => Auth.signOut()}
+        icon="logout"
+        buttonColor="#e3e3e3"
+        textColor="#363636"
+      >
+        Logout
       </ThemeButton>
     </Container>
   );
