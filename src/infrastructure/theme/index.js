@@ -38,10 +38,8 @@ export const ThemeView = styled.View`
   background-color: ${colors.background};
 `;
 export const RowContainer = styled.View`
-  display: flex;
-  width: 100%;
   flex-direction: row;
-  justify-content: space-between;
+  width: 70%;
   align-items: center;
   padding: 20px;
 `;

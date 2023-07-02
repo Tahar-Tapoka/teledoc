@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import { useRoute } from "@react-navigation/native";
-import CustomInput from "../components/CustomInput";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../../components/CustomButton";
 import {
   Spacer,
   ThemeButton,
@@ -12,7 +10,7 @@ import {
   ThemeView,
   TitleText,
   theme,
-} from "../infrastructure/theme";
+} from "../../infrastructure/theme";
 import { Alert } from "react-native";
 import { Auth } from "aws-amplify";
 

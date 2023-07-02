@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { StyleSheet, Text } from "react-native";
 import {
   Container,
   ThemeButton,
   ThemeButtonText,
   TitleText,
   theme,
-} from "../infrastructure/theme";
+} from "../../infrastructure/theme";
 import { Avatar } from "react-native-paper";
 import { Auth } from "@aws-amplify/auth";
 import { useNavigation } from "@react-navigation/native";
@@ -17,7 +16,7 @@ const AccountCreatedScreen = () => {
     <Container>
       <Avatar.Image
         size={300}
-        source={require("../../assets/thumb.png")}
+        source={require("../../../assets/thumb.png")}
         style={{ backgroundColor: theme.colors.background }}
       />
 

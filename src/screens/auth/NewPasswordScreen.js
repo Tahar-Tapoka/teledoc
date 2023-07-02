@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import CustomInput from "../components/CustomInput";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import {
   Spacer,
@@ -10,7 +8,7 @@ import {
   ThemeInput,
   ThemeView,
   TitleText,
-} from "../infrastructure/theme";
+} from "../../infrastructure/theme";
 
 const NewPasswordScreen = () => {
   const [code, setCode] = useState("");

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import CustomInput from "../components/CustomInput";
-import CustomButton from "../components/CustomButton";
-import SocialSignInButtons from "../components/SocialSignInButtons";
+import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
+import SocialSignInButtons from "../../components/SocialSignInButtons";
+import SegmentedButton from "../../components/SegmentedButton";
 import { useNavigation } from "@react-navigation/core";
 import {
   Spacer,
@@ -12,10 +13,7 @@ import {
   ThemeView,
   TitleText,
   theme,
-} from "../infrastructure/theme";
-import SegmentedButton from "../components/SegmentedButton";
-import { Avatar } from "react-native-paper";
-import Logo from "../../assets/avatar.png";
+} from "../../infrastructure/theme";
 import { Auth } from "aws-amplify";
 import { Alert } from "react-native";
 import { useForm } from "react-hook-form";
@@ -64,11 +62,11 @@ const SignUpScreen = () => {
   };
 
   const onTermsOfUsePressed = () => {
-    console.warn("onTermsOfUsePressed");
+    navigation.navigate("Policies", { policy: false });
   };
 
   const onPrivacyPressed = () => {
-    console.warn("onPrivacyPressed");
+    navigation.navigate("Policies", { policy: true });
   };
 
   return (

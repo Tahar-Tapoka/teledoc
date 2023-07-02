@@ -1,7 +1,4 @@
-import React from "react";
-import { View, Text } from "react-native";
-import CustomButton from "./CustomButton";
-import { ThemeButton, ThemeButtonText } from "../infrastructure/theme";
+import { ThemeButton } from "../infrastructure/theme";
 
 const SocialSignInButtons = () => {
   const onSignInFacebook = () => {

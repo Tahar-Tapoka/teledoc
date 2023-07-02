@@ -1,32 +1,24 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  useWindowDimensions,
-  ScrollView,
-} from "react-native";
-import Logo from "../../assets/avatar.png";
-import CustomInput from "../components/CustomInput";
-import CustomButton from "../components/CustomButton";
-import SocialSignInButtons from "../components/SocialSignInButtons";
+import { StyleSheet, useWindowDimensions, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Container } from "aws-amplify-react-native";
+import { Avatar } from "react-native-paper";
+import { Auth } from "aws-amplify";
+import { Alert } from "react-native";
+import { useForm } from "react-hook-form";
+
 import {
   Spacer,
   ThemeButton,
   ThemeButtonText,
-  ThemeInput,
   ThemeView,
   TitleText,
   theme,
-} from "../infrastructure/theme";
-import { Avatar, SegmentedButtons } from "react-native-paper";
-import SegmentedButton from "../components/SegmentedButton";
-import { Auth } from "aws-amplify";
-import { Alert } from "react-native";
-import { useForm } from "react-hook-form";
+} from "../../infrastructure/theme";
+import Logo from "../../../assets/avatar.png";
+import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
+import SocialSignInButtons from "../../components/SocialSignInButtons";
+import SegmentedButton from "../../components/SegmentedButton";
 
 const SignInScreen = () => {
   const [user, setUser] = useState("Patient");
