@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/core";
 import { useRoute } from "@react-navigation/native";
 import CustomButton from "../../components/CustomButton";
@@ -6,19 +5,18 @@ import {
   Spacer,
   ThemeButton,
   ThemeButtonText,
-  ThemeInput,
   ThemeView,
   TitleText,
   theme,
 } from "../../infrastructure/theme";
 import { Alert } from "react-native";
-import { Auth } from "aws-amplify";
+import { Auth, DataStore } from "aws-amplify";
 import { useForm } from "react-hook-form";
+import CustomInput from "../../components/CustomInput";
+import { Patient } from "../../models";
 
 const ConfirmEmailScreen = () => {
   const { control, handleSubmit } = useForm();
-
-  const [code, setCode] = useState("");
   const route = useRoute();
 
   const navigation = useNavigation();
@@ -26,7 +24,22 @@ const ConfirmEmailScreen = () => {
   const onConfirmPressed = async (data) => {
     try {
       await Auth.confirmSignUp(route?.params?.username, data.code);
-      navigation.navigate("SignIn"); // should show home with the new user
+      await DataStore.save(
+        new Patient({
+          email: route?.params?.username,
+          sub: route?.params?.sub,
+          // mobile: phone, //in production should be the main mechanism?
+          // full_name: fullName,
+          // gender: data.gender, //should be switch buttons
+          // picture: data.picture,//........
+          // date_of_birth: data.birthDate,//........
+          // address: address,
+          // username: username,
+          //lat: parseFloat(lat),//........
+          //lng: parseFloat(lng),//........
+        })
+      );
+      navigation.navigate("SignIn", { newAccount: true }); // should show home with the new user
     } catch (e) {
       Alert.alert("Oops", e.message);
     }

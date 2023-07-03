@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, useWindowDimensions, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import {
+  StyleSheet,
+  useWindowDimensions,
+  ScrollView,
+  Text,
+} from "react-native";
 import { Avatar } from "react-native-paper";
 import { Auth } from "aws-amplify";
 import { Alert } from "react-native";
@@ -15,20 +19,15 @@ import {
   theme,
 } from "../../infrastructure/theme";
 import Logo from "../../../assets/avatar.png";
+import Thumb from "../../../assets/thumb.png";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import SocialSignInButtons from "../../components/SocialSignInButtons";
 import SegmentedButton from "../../components/SegmentedButton";
 
-const SignInScreen = () => {
-  const [user, setUser] = useState("Patient");
-  // const [mobile, setMobile] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [errorMessage, setErrorMessage] = useState();
+const SignInScreen = ({ route, navigation }) => {
+  const newAccount = route?.params?.newAccount;
   const [loading, setLoading] = useState(false);
-
-  const { height } = useWindowDimensions();
-  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
@@ -44,8 +43,6 @@ const SignInScreen = () => {
       Alert.alert("Oops", err.message);
     }
     setLoading(false);
-    // validate user
-    // navigation.navigate("Home");
   };
 
   const onForgotPasswordPressed = () => {
@@ -58,16 +55,29 @@ const SignInScreen = () => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
-      <Avatar.Image size={120} source={Logo} style={styles.logo} />
-      <SegmentedButton user={user} setUser={setUser} />
+      <Avatar.Image
+        size={180}
+        source={newAccount ? Thumb : Logo}
+        style={styles.logo}
+      />
+      {/* <SegmentedButton user={user} setUser={setUser} /> */}
 
       <ThemeView>
-        <Spacer size={3} />
-        <TitleText>{user} Login</TitleText>
+        {/* <Spacer size={3} /> */}
+        {newAccount ? (
+          <>
+            <TitleText>Account Created!</TitleText>
+            <Text style={{ color: theme.colors.backdrop }}>
+              Your account had been created succefully
+            </Text>
+          </>
+        ) : (
+          <TitleText>Login</TitleText>
+        )}
         <Spacer size={2} />
         <CustomInput
           name="username"
-          label="Mobile Number"
+          label="Email"
           control={control}
           rules={{ required: "Username is required" }}
         />
@@ -91,21 +101,27 @@ const SignInScreen = () => {
           textColor="#F1F1F1"
           loading={loading}
         >
-          <ThemeButtonText>Sign In</ThemeButtonText>
+          <ThemeButtonText>
+            {newAccount ? "Get Started" : "Sign In"}
+          </ThemeButtonText>
         </ThemeButton>
 
-        <CustomButton
-          text="Forgot password?"
-          onPress={onForgotPasswordPressed}
-          type="TERTIARY"
-        />
-        <SocialSignInButtons />
+        {!newAccount && (
+          <>
+            <CustomButton
+              text="Forgot password?"
+              onPress={onForgotPasswordPressed}
+              type="TERTIARY"
+            />
+            <SocialSignInButtons />
 
-        <CustomButton
-          text="Don't have an account? Create one"
-          onPress={onSignUpPress}
-          type="TERTIARY"
-        />
+            <CustomButton
+              text="Don't have an account? Create one"
+              onPress={onSignUpPress}
+              type="TERTIARY"
+            />
+          </>
+        )}
       </ThemeView>
     </ScrollView>
   );
@@ -119,6 +135,7 @@ const styles = StyleSheet.create({
   logo: {
     marginTop: theme.space[6],
     alignSelf: "center",
+    backgroundColor: theme.colors.background,
   },
 });
 

@@ -14,6 +14,7 @@ import AboutUs from "../../screens/addOnes/AboutUs";
 import ContactUs from "../../screens/addOnes/ContactUs";
 import LoadingScreen from "../../components/LoadingScreen";
 import { useAuthContext } from "../../contexts/AuthContext";
+import Profile, { ProfileScreen } from "../../screens/auth/ProfileScreen";
 
 const Stack = createStackNavigator();
 
@@ -50,11 +51,14 @@ const Navigation = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {authUser ? (
-          <Stack.Screen
-            name="Home"
-            component={AccountCreatedScreen}
-            initialParams={{ user: authUser.attributes.name }}
-          />
+          <>
+            <Stack.Screen
+              name="AccountCreated"
+              component={AccountCreatedScreen}
+              initialParams={{ user: authUser.attributes.name }}
+            />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+          </>
         ) : (
           <>
             <Stack.Screen name="SignIn" component={SignInScreen} />

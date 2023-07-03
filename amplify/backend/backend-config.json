@@ -38,10 +38,10 @@
         "signupAttributes": [],
         "socialProviders": [],
         "usernameAttributes": [
-          "PHONE_NUMBER"
+          "EMAIL"
         ],
         "verificationMechanisms": [
-          "PHONE_NUMBER"
+          "EMAIL"
         ]
       },
       "providerPlugin": "awscloudformation",

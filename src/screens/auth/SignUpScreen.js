@@ -9,7 +9,6 @@ import {
   Spacer,
   ThemeButton,
   ThemeButtonText,
-  ThemeInput,
   ThemeView,
   TitleText,
   theme,
@@ -17,44 +16,39 @@ import {
 import { Auth } from "aws-amplify";
 import { Alert } from "react-native";
 import { useForm } from "react-hook-form";
+import { Patient } from "../../models";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const MOBILE_REGEX = /^\+213[5-7][0-9]{8}$/;
+const MOBILE_REGEX = /^[0]{1}[5-7]{1}[0-9]{8}$/; ///^\[0][5-7][0-9]{8}$/;
 
-const SignUpScreen = () => {
-  // const [mobile, setMobile] = useState("");
-  // const [username, setUsername] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [passwordRepeat, setPasswordRepeat] = useState("");
-  // const [errorMessage, setErrorMessage] = useState();
-  const [user, setUser] = useState("Patient");
+const SignUpScreen = ({ navigation }) => {
+  // const [user, setUser] = useState("Patient");
   const [loading, setLoading] = useState(false);
 
   const { control, handleSubmit, watch } = useForm();
   const pwd = watch("password");
-  const navigation = useNavigation();
 
   const onRegisterPressed = async (data) => {
-    const { username, password, email, name } = data;
+    const { password, email } = data;
 
     // const mob = "+213".concat(mobile.slice(1));
     if (loading) return;
     setLoading(true);
     try {
-      await Auth.signUp({
-        username,
+      const user = await Auth.signUp({
+        username: email,
         password,
-        attributes: { email, name },
+        // attributes: { email, name },
       });
-      navigation.navigate("ConfirmEmail", { username });
+      navigation.navigate("ConfirmEmail", {
+        username: email,
+        sub: user.userSub,
+      });
     } catch (err) {
       Alert.alert("Oops", err.message);
     }
     setLoading(false);
-    // console.log(mob);
-    // navigation.navigate("ConfirmEmail");
   };
 
   const onSignInPress = () => {
@@ -74,45 +68,10 @@ const SignUpScreen = () => {
       showsVerticalScrollIndicator={false}
       style={{ backgroundColor: theme.colors.background, flex: 1 }}
     >
-      {/* <Avatar.Image size={84} source={Logo} style={styles.logo} /> */}
-      <Spacer size={3} />
       <ThemeView>
-        <Spacer size={3}>
-          <TitleText>Create a {user} account</TitleText>
+        <Spacer size={6}>
+          <TitleText>Create a new account</TitleText>
         </Spacer>
-        <View style={{ width: "80%", marginBottom: 10 }}>
-          <SegmentedButton user={user} setUser={setUser} />
-        </View>
-
-        <CustomInput
-          name="name"
-          control={control}
-          label="Name"
-          rules={{
-            required: "Name is required",
-            minLength: {
-              value: 3,
-              message: "Name should be at least 3 characters long",
-            },
-            maxLength: {
-              value: 24,
-              message: "Name should be max 24 characters long",
-            },
-          }}
-        />
-        <CustomInput
-          keyboardType="phone-pad"
-          name="username"
-          control={control}
-          label="Mobile Number"
-          rules={{
-            required: "Mobile Number is required",
-            pattern: {
-              value: MOBILE_REGEX,
-              message: "Phone Number is invalid",
-            },
-          }}
-        />
         <CustomInput
           name="email"
           control={control}

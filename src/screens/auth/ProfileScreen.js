@@ -14,10 +14,14 @@ import { Patient, Gender } from "../../models";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useForm } from "react-hook-form";
 
-export const Profile = ({ navigation }) => {
-  const { control, handleSubmit } = useForm();
+export const ProfileScreen = ({ navigation }) => {
   const { sub, setDbUser, dbUser } = useAuthContext();
-  const [name, setName] = useState(dbUser?.name || "");
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      email: dbUser?.attributes?.email,
+      username: dbUser?.attributes?.name,
+    },
+  });
   const [address, setAddress] = useState(dbUser?.address || "");
   const [lat, setLat] = useState(dbUser?.lat.toString() || "0");
   const [lng, setLng] = useState(dbUser?.lng.toString() || "0");
@@ -28,9 +32,9 @@ export const Profile = ({ navigation }) => {
       try {
         DataStore.save(
           new User({
-            mobile: data.mobile, //get it from dbUser
+            mobile: dbUser?.attributes.phone_number, //get it from dbUser... done?
             full_name: data.fullName,
-            gender: data.gender,
+            gender: data.gender, //should be switch buttons
             email: data.email,
             picture: data.picture,
             date_of_birth: data.birthDate,
@@ -75,6 +79,7 @@ export const Profile = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
+      <Text>Mobile Number : {dbUser?.attributes.phone_number}</Text>
       <CustomInput
         name="fullName"
         control={control}
@@ -146,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default ProfileScreen;

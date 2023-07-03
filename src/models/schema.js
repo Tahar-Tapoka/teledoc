@@ -10,15 +10,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "mobile": {
-                    "name": "mobile",
+                "email": {
+                    "name": "email",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSEmail",
                     "isRequired": true,
                     "attributes": []
                 },
-                "full_name": {
-                    "name": "full_name",
+                "sub": {
+                    "name": "sub",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -30,14 +30,14 @@ export const schema = {
                     "type": {
                         "enum": "Gender"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
-                "sub": {
-                    "name": "sub",
+                "mobile": {
+                    "name": "mobile",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "date_of_birth": {
@@ -61,10 +61,10 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "email": {
-                    "name": "email",
+                "full_name": {
+                    "name": "full_name",
                     "isArray": false,
-                    "type": "AWSEmail",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -143,5 +143,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.5",
-    "version": "8cb5dda9e6f261b8944d465c729cf6b5"
+    "version": "fc6c6101eaaeaf889972023e3a2423f1"
 };
