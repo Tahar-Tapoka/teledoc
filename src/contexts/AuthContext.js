@@ -24,8 +24,8 @@ export const AuthContextProvider = ({ children }) => {
 
   loadUser = async () => {
     const users = await DataStore.query(Patient, (usr) => usr.sub.eq(sub));
-    console.log("users :", users);
     setDbUser(users[0]);
+    console.log("dbUser :", dbUser);
   };
 
   useEffect(() => {

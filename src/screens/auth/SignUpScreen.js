@@ -3,8 +3,6 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import SocialSignInButtons from "../../components/SocialSignInButtons";
-import SegmentedButton from "../../components/SegmentedButton";
-import { useNavigation } from "@react-navigation/core";
 import {
   Spacer,
   ThemeButton,
@@ -16,11 +14,9 @@ import {
 import { Auth } from "aws-amplify";
 import { Alert } from "react-native";
 import { useForm } from "react-hook-form";
-import { Patient } from "../../models";
 
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const MOBILE_REGEX = /^[0]{1}[5-7]{1}[0-9]{8}$/; ///^\[0][5-7][0-9]{8}$/;
 
 const SignUpScreen = ({ navigation }) => {
   // const [user, setUser] = useState("Patient");

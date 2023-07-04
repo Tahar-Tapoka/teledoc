@@ -39,15 +39,19 @@ export const ThemeView = styled.View`
 `;
 export const RowContainer = styled.View`
   flex-direction: row;
-  width: 70%;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
+  width: 80%;
 `;
 export const ThemeButtonText = styled.Text`
   font-size: 16px;
   font-weight: ${fontWeights.bold};
   color: #fff;
 `;
+export const SubtitleText = styled.Text`
+  font-size: 18px;
+`;
+// font-weight: ${fontWeights.bold};
 export const TitleText = styled.Text`
   font-weight: ${fontWeights.medium};
   font-size: ${fontSizes.title}px;

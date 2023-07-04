@@ -3,34 +3,32 @@ import React from "react";
 import { SegmentedButtons } from "react-native-paper";
 import { theme } from "../infrastructure/theme";
 
-const SegmentedButton = ({ user, setUser }) => {
+const SegmentedButton = ({ user, setUser, value1, value2, icon1, icon2 }) => {
   return (
     <SegmentedButtons
       value={user}
       onValueChange={setUser}
       buttons={[
         {
-          value: "Patient",
-          label: "Patient",
-          icon: "emoticon-sick-outline",
+          value: value1,
+          label: value1,
+          icon: icon1,
           checkedColor: "white",
           style: {
             ...styles.segmentBtn,
             backgroundColor:
-              user === "Patient" ? theme.colors.primary : theme.colors.disabled,
+              user === value1 ? theme.colors.accent : theme.colors.disabled,
           },
         },
         {
-          value: "Consultant",
-          label: "Consultant",
-          icon: "doctor",
+          value: value2,
+          label: value2,
+          icon: icon2,
           checkedColor: "white",
           style: {
             ...styles.segmentBtn,
             backgroundColor:
-              user === "Consultant"
-                ? theme.colors.primary
-                : theme.colors.disabled,
+              user === value2 ? theme.colors.primary : theme.colors.disabled,
           },
         },
       ]}

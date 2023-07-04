@@ -9,8 +9,7 @@ import {
 import { Avatar } from "react-native-paper";
 import { Auth } from "@aws-amplify/auth";
 import { useNavigation } from "@react-navigation/native";
-const AccountCreatedScreen = ({ route }) => {
-  const navigation = useNavigation();
+const AccountCreatedScreen = ({ route, navigation }) => {
   const user = route.params.user;
   return (
     <Container>

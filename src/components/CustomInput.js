@@ -9,6 +9,7 @@ const CustomInput = ({
   label,
   secureTextEntry,
   keyboardType,
+  editable,
 }) => {
   return (
     <Controller
@@ -28,6 +29,7 @@ const CustomInput = ({
             secureTextEntry={secureTextEntry}
             style={error && { backgroundColor: theme.colors.error }}
             keyboardType={keyboardType}
+            editable={editable}
           />
           {error && (
             <Text style={{ color: theme.colors.error, alignSelf: "center" }}>
