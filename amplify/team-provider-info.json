@@ -15,6 +15,12 @@
       "auth": {
         "teledoccce72afe": {},
         "TeleDoc": {}
+      },
+      "api": {
+        "TeleDoc": {}
+      },
+      "storage": {
+        "profilePic": {}
       }
     }
   }

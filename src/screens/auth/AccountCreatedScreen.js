@@ -28,6 +28,7 @@ const AccountCreatedScreen = ({ route, navigation }) => {
         textColor="#F1F1F1"
         onPress={() => {
           console.log("yaaaaaay");
+          navigation.navigate("Profile");
         }}
       >
         <ThemeButtonText>Get Started</ThemeButtonText>

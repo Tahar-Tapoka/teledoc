@@ -1,0 +1,14 @@
+{
+  "resourceName": "profilePic",
+  "policyUUID": "aab95910",
+  "bucketName": "teledocprofilepic",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

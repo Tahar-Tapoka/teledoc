@@ -16,6 +16,7 @@ import LoadingScreen from "../../components/LoadingScreen";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Profile, { ProfileScreen } from "../../screens/auth/ProfileScreen";
 import TryItScreen from "../../screens/addOnes/TryItScreen";
+import { CameraScreen } from "../../screens/auth/CameraScreen";
 
 const Stack = createStackNavigator();
 
@@ -53,16 +54,30 @@ const Navigation = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {dbUser ? (
           <>
-            {/* <Stack.Screen
-              name="AccountCreated"
-              component={AccountCreatedScreen}
-              initialParams={{ user: dbUser?.username }}
-            /> */}
-            <Stack.Screen
-              name="Profile"
-              component={ProfileScreen}
-              initialParams={{ user: dbUser }}
-            />
+            {dbUser.username ? (
+              <>
+                <Stack.Screen
+                  name="AccountCreated"
+                  component={AccountCreatedScreen}
+                  initialParams={{ user: dbUser?.username }}
+                />
+                <Stack.Screen
+                  name="Profile"
+                  component={ProfileScreen}
+                  initialParams={{ user: dbUser }}
+                />
+                <Stack.Screen name="CameraScreen" component={CameraScreen} />
+              </>
+            ) : (
+              <>
+                <Stack.Screen
+                  name="Profile"
+                  component={ProfileScreen}
+                  initialParams={{ user: dbUser }}
+                />
+                <Stack.Screen name="CameraScreen" component={CameraScreen} />
+              </>
+            )}
           </>
         ) : (
           <>

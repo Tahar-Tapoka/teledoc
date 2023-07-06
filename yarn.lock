@@ -3803,6 +3803,13 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@koale/useworker@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@koale/useworker/-/useworker-4.0.2.tgz#cb540a2581cd6025307c3ca6685bc60748773e58"
+  integrity sha512-xPIPADtom8/3/4FLNj7MvNcBM/Z2FleH85Fdx2O869eoKW8+PoEgtSVvoxWjCWMA46Sm9A5/R1TyzNGc+yM0wg==
+  dependencies:
+    dequal "^1.0.0"
+
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3":
   version "2.1.8-no-fsevents.3"
   resolved "https://registry.npmjs.org/@nicolo-ribaudo/chokidar-2/-/chokidar-2-2.1.8-no-fsevents.3.tgz"
@@ -4014,10 +4021,10 @@
     prompts "^2.4.0"
     semver "^6.3.0"
 
-"@react-native-community/datetimepicker@^7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-7.3.0.tgz#572041cec215b4a939728462a3a20fc6339ec21e"
-  integrity sha512-EH3h9FK7F9Tey9HhPxszzgEnOWUA9W2KOvt5ho3DGtkzlujwjywkbaASFs/c1Suljate6Bh/HDXGoxKGoaf7eQ==
+"@react-native-community/datetimepicker@6.7.3":
+  version "6.7.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.7.3.tgz#e6d75a42729265d8404d1d668c86926564abca2f"
+  integrity sha512-fXWbEdHMLW/e8cts3snEsbOTbnFXfUHeO2pkiDFX3fWpFoDtUrRWvn50xbY13IJUUKHDhoJ+mj24nMRVIXfX1A==
   dependencies:
     invariant "^2.2.4"
 
@@ -5409,6 +5416,11 @@ deprecated-react-native-prop-types@^3.0.1:
     invariant "*"
     prop-types "*"
 
+dequal@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/dequal/-/dequal-1.0.1.tgz#dbbf9795ec626e9da8bd68782f4add1d23700d8b"
+  integrity sha512-Fx8jxibzkJX2aJgyfSdLhr9tlRoTnHKrRJuu2XHlAgKioN2j19/Bcbe0d4mFXYZ3+wpE2KVobUVTfDutcD17xQ==
+
 destroy@1.2.0:
   version "1.2.0"
   resolved "https://registry.npmjs.org/destroy/-/destroy-1.2.0.tgz"
@@ -5588,6 +5600,14 @@ expo-asset@~8.9.1:
     md5-file "^3.2.3"
     path-browserify "^1.0.0"
     url-parse "^1.5.9"
+
+expo-camera@~13.2.1:
+  version "13.2.1"
+  resolved "https://registry.yarnpkg.com/expo-camera/-/expo-camera-13.2.1.tgz#bfd1e2248d10a5da43d43a4cc77e378e5acf25bb"
+  integrity sha512-fZdRyF402jJGGmLVlumrLcr5Em9+Y2SO1MIlxLBtHXnybyHbTRMRAbzVapKX1Aryfujqadh+Kl+sdsWYkMuJjg==
+  dependencies:
+    "@koale/useworker" "^4.0.2"
+    invariant "^2.2.4"
 
 expo-constants@~14.2.0, expo-constants@~14.2.1:
   version "14.2.1"
@@ -7419,11 +7439,6 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
-
-moment@^2.29.4:
-  version "2.29.4"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
-  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 ms@2.0.0:
   version "2.0.0"

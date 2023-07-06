@@ -1,7 +1,7 @@
 import { Text, Keyboard, Alert, Pressable } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useState } from "react";
-import { Auth, DataStore } from "aws-amplify";
+import { useEffect, useState } from "react";
+import { Auth, DataStore, Storage } from "aws-amplify";
 import { Patient, Gender } from "../../models";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,9 @@ import {
   TitleText,
 } from "../../infrastructure/theme";
 import { View } from "react-native";
+import { TouchableOpacity } from "react-native";
+import { Avatar } from "react-native-paper";
+import { colors } from "../../infrastructure/theme/colors";
 // import moment from "moment/moment";
 
 const MOBILE_REGEX = /^[0]{1}[5-7]{1}[0-9]{8}$/; ///^\[0][5-7][0-9]{8}$/;
@@ -31,7 +34,6 @@ export const ProfileScreen = ({ navigation }) => {
       // birthDate: dbUser?.date_of_birth,
       fullName: dbUser?.full_name,
       mobile: dbUser?.mobile,
-      picture: dbUser?.picture,
     },
   });
   const [gender, setGender] = useState(dbUser?.gender || Gender.MALE);
@@ -40,6 +42,7 @@ export const ProfileScreen = ({ navigation }) => {
   const [lng, setLng] = useState(dbUser?.lng?.toString() || "0");
   const [birthday, setBirthday] = useState(new Date(dbUser?.date_of_birth));
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [photo, setPhoto] = useState();
 
   const onSave = async (data) => {
     if (loading) return;
@@ -52,7 +55,7 @@ export const ProfileScreen = ({ navigation }) => {
           updated.mobile = data.mobile;
           updated.full_name = data.fullName;
           updated.gender = gender;
-          updated.picture = data.picture;
+          updated.picture = photo;
           updated.date_of_birth = birthday.toISOString().split("T")[0];
           updated.address = data.address;
           updated.username = data.username;
@@ -66,15 +69,13 @@ export const ProfileScreen = ({ navigation }) => {
     }
     setLoading(false);
     Keyboard.dismiss();
-    // navigation.navigate('AccountCreated', {user:dbUser?.username});
+    navigation.navigate("AccountCreated", { user: dbUser?.username });
   };
 
   const handleDateChange = (event, date) => {
     setShowDatePicker(false);
     if (date !== undefined) {
       setBirthday(date);
-      const aws = birthday.toDateString().split("T")[0];
-      // console.log(birthday.split("T")[0]);
       console.log(birthday.toISOString().split("T")[0]);
     }
   };
@@ -82,11 +83,47 @@ export const ProfileScreen = ({ navigation }) => {
   const handleToggleDatePicker = () => {
     setShowDatePicker(!showDatePicker);
   };
+  useEffect(() => {
+    onPageRendered();
+  }, []);
+
+  const onPageRendered = async () => {
+    getProfilePicture();
+  };
+
+  const getProfilePicture = async () => {
+    try {
+      const url = await Storage.get(`${dbUser.id}-photo.jpg`);
+      setPhoto(url);
+    } catch (error) {
+      console.log("Error retrieving profile picture:", error);
+    }
+  };
 
   return (
     <ThemeView>
       <Spacer size={4} />
       <TitleText>Profile</TitleText>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("CameraScreen");
+          }}
+        >
+          {!photo ? (
+            <Avatar.Icon
+              size={120}
+              icon="human"
+              backgroundColor={colors.error}
+            />
+          ) : (
+            <Avatar.Image
+              size={180}
+              source={{ uri: dbUser?.picture || photo }}
+            />
+          )}
+        </TouchableOpacity>
+      </View>
       <SubtitleText>{dbUser?.email}</SubtitleText>
       <CustomInput
         name="username"
@@ -154,9 +191,7 @@ export const ProfileScreen = ({ navigation }) => {
           minimumDate={new Date("1920-1-1")}
         />
       )}
-      {/* should be a date picker or something ?? */}
       <CustomInput name="address" control={control} label="Address" />
-      <CustomInput name="picture" control={control} label="Picture" />
       <RowContainer>
         <SubtitleText>Gender : </SubtitleText>
         <View style={{ width: "60%", marginLeft: "auto" }}>
