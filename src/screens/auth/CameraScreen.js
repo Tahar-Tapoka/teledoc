@@ -44,12 +44,14 @@ export const CameraScreen = ({ navigation }) => {
         const blob = await response.blob();
         await Storage.put(`${dbUser.id}-photo.jpg`, blob, {
           contentType: "image/jpeg", // contentType is optional
+          level: "public", // Modify the level based on your requirements
+          expires: 0, // Setting expires to 0 means no expiry date
         });
         console.log("Image uploaded successfully");
       } catch (error) {
         console.log("Error uploading file: ", error);
       }
-      navigation.goBack();
+      navigation.navigate("Profile");
     }
   };
 

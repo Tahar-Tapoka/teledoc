@@ -14,7 +14,7 @@ import AboutUs from "../../screens/addOnes/AboutUs";
 import ContactUs from "../../screens/addOnes/ContactUs";
 import LoadingScreen from "../../components/LoadingScreen";
 import { useAuthContext } from "../../contexts/AuthContext";
-import Profile, { ProfileScreen } from "../../screens/auth/ProfileScreen";
+import { ProfileScreen } from "../../screens/auth/ProfileScreen";
 import TryItScreen from "../../screens/addOnes/TryItScreen";
 import { CameraScreen } from "../../screens/auth/CameraScreen";
 
@@ -22,30 +22,6 @@ const Stack = createStackNavigator();
 
 const Navigation = () => {
   const { dbUser, authUser } = useAuthContext();
-
-  // const [user, setUser] = useState(undefined);
-  // checkAuth = async () => {
-  //   try {
-  //     const authUser = await Auth.currentAuthenticatedUser({
-  //       bypassCache: true,
-  //     });
-  //     setUser(authUser);
-  //   } catch (e) {
-  //     setUser(null);
-  //   }
-  // };
-  // useEffect(() => {
-  //   checkAuth();
-  // }, []);
-  // useEffect(() => {
-  //   const listner = (data) => {
-  //     if (data.payload.event === "signIn" || data.payload.event === "signOut") {
-  //       checkAuth();
-  //     }
-  //   };
-  //   Hub.listen("auth", listner);
-  //   return () => Hub.remove("auth", listner);
-  // }, []);
   if (authUser === undefined) {
     return <LoadingScreen />;
   }

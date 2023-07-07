@@ -27,7 +27,11 @@ const MOBILE_REGEX = /^[0]{1}[5-7]{1}[0-9]{8}$/; ///^\[0][5-7][0-9]{8}$/;
 
 export const ProfileScreen = ({ navigation }) => {
   const { sub, setDbUser, dbUser } = useAuthContext();
-  const { control, handleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { dirtyFields },
+  } = useForm({
     defaultValues: {
       username: dbUser?.username,
       address: dbUser?.address,
@@ -36,13 +40,20 @@ export const ProfileScreen = ({ navigation }) => {
       mobile: dbUser?.mobile,
     },
   });
+
   const [gender, setGender] = useState(dbUser?.gender || Gender.MALE);
   const [loading, setLoading] = useState(false);
   const [lat, setLat] = useState(dbUser?.lat?.toString() || "0");
   const [lng, setLng] = useState(dbUser?.lng?.toString() || "0");
   const [birthday, setBirthday] = useState(new Date(dbUser?.date_of_birth));
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [photo, setPhoto] = useState();
+  const [photo, setPhoto] = useState(dbUser?.picture);
+
+  const isFormDirty =
+    Object.keys(dirtyFields).length > 0 ||
+    birthday.toISOString().split("T")[0] !== dbUser?.date_of_birth ||
+    gender !== dbUser?.gender; // ||
+  // photo.toString() !== dbUser?.picture.toString();
 
   const onSave = async (data) => {
     if (loading) return;
@@ -84,12 +95,9 @@ export const ProfileScreen = ({ navigation }) => {
     setShowDatePicker(!showDatePicker);
   };
   useEffect(() => {
-    onPageRendered();
-  }, []);
-
-  const onPageRendered = async () => {
     getProfilePicture();
-  };
+    // console.log(photo);
+  }, [photo]);
 
   const getProfilePicture = async () => {
     try {
@@ -117,10 +125,7 @@ export const ProfileScreen = ({ navigation }) => {
               backgroundColor={colors.error}
             />
           ) : (
-            <Avatar.Image
-              size={180}
-              source={{ uri: dbUser?.picture || photo }}
-            />
+            <Avatar.Image size={180} source={{ uri: photo }} />
           )}
         </TouchableOpacity>
       </View>
@@ -173,11 +178,7 @@ export const ProfileScreen = ({ navigation }) => {
       >
         <ThemeInput
           value={birthday?.toLocaleDateString("fr-FR")}
-          // value={ }
-          // onChangeText={() => setBirthday}
-          // onBlur={onBlur}
           label={"Date of Birth"}
-          // style={error && { backgroundColor: theme.colors.error }}
           editable={false}
         />
       </Pressable>
@@ -206,6 +207,7 @@ export const ProfileScreen = ({ navigation }) => {
       <Spacer size={2} />
       <ThemeButton
         onPress={handleSubmit(onSave)}
+        disabled={!isFormDirty}
         icon={loading ? null : "check-all"}
         textColor="#F1F1F1"
         loading={loading}
