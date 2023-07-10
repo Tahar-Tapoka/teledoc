@@ -1,23 +1,21 @@
-import React, { useState } from "react";
 import CustomButton from "../../components/CustomButton";
-import { useNavigation } from "@react-navigation/core";
 import { Auth } from "aws-amplify";
+import { Alert } from "react-native";
+import { useForm } from "react-hook-form";
+import { Avatar } from "react-native-paper";
+
 import {
   Spacer,
   ThemeButton,
   ThemeButtonText,
-  ThemeInput,
   ThemeView,
   TitleText,
 } from "../../infrastructure/theme";
-import { Alert } from "react-native";
-import { useForm } from "react-hook-form";
 import CustomInput from "../../components/CustomInput";
+import Logo from "../../../assets/avatar.png";
 
-const ForgotPasswordScreen = () => {
+const ForgotPasswordScreen = ({ navigation }) => {
   const { control, handleSubmit } = useForm();
-
-  const navigation = useNavigation();
 
   const onSendPressed = async (data) => {
     try {
@@ -34,17 +32,18 @@ const ForgotPasswordScreen = () => {
 
   return (
     <ThemeView>
-      <Spacer size={4} />
+      <Spacer size={2} />
+      <Avatar.Image size={180} source={Logo} />
       <TitleText>Reset your password</TitleText>
-      <Spacer size={6} />
+      <Spacer size={2} />
       <CustomInput
         name="username"
         control={control}
-        label="Mobile number"
+        label="Email"
         rules={{
-          required: "Username is required",
+          required: "Email is required",
         }}
-        keyboardType="phone-pad"
+        // keyboardType="phone-pad"
       />
       <ThemeButton
         onPress={handleSubmit(onSendPressed)}

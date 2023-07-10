@@ -14,6 +14,7 @@ import {
   ThemeButton,
   ThemeButtonText,
   ThemeInput,
+  ThemeScroll,
   ThemeView,
   TitleText,
 } from "../../infrastructure/theme";
@@ -109,122 +110,128 @@ export const ProfileScreen = ({ navigation }) => {
   };
 
   return (
-    <ThemeView>
-      <Spacer size={4} />
-      <TitleText>Profile</TitleText>
-      <View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("CameraScreen");
-          }}
-        >
-          {!photo ? (
-            <Avatar.Icon
-              size={120}
-              icon="human"
-              backgroundColor={colors.error}
-            />
-          ) : (
-            <Avatar.Image size={180} source={{ uri: photo }} />
-          )}
-        </TouchableOpacity>
-      </View>
-      <SubtitleText>{dbUser?.email}</SubtitleText>
-      <CustomInput
-        name="username"
-        control={control}
-        label="Username"
-        rules={{
-          required: "Full Name is required",
-          minLength: {
-            value: 3,
-            message: "Full Name should be at least 5 characters long",
-          },
-          maxLength: {
-            value: 15,
-            message: "Full Name should be max 32 characters long",
-          },
-        }}
-      />
-      <CustomInput
-        name="fullName"
-        control={control}
-        label="Full Name"
-        rules={{
-          required: "Full Name is required",
-          minLength: {
-            value: 5,
-            message: "Full Name should be at least 5 characters long",
-          },
-          maxLength: {
-            value: 32,
-            message: "Full Name should be max 32 characters long",
-          },
-        }}
-      />
-      <CustomInput
-        name="mobile"
-        control={control}
-        label="Phone Number"
-        rules={{
-          required: "Phone Number is required",
-          pattern: { value: MOBILE_REGEX, message: "Phone Number is invalid" },
-        }}
-        keyboardType="phone-pad"
-      />
-      <Pressable
-        onPress={handleToggleDatePicker}
-        style={{ width: "100%", alignItems: "center" }}
-      >
-        <ThemeInput
-          value={birthday?.toLocaleDateString("fr-FR")}
-          label={"Date of Birth"}
-          editable={false}
-        />
-      </Pressable>
-      {showDatePicker && (
-        <DateTimePicker
-          value={birthday}
-          mode="date"
-          display="spinner"
-          onChange={handleDateChange}
-          maximumDate={new Date()}
-          minimumDate={new Date("1920-1-1")}
-        />
-      )}
-      <CustomInput name="address" control={control} label="Address" />
-      <RowContainer>
-        <SubtitleText>Gender : </SubtitleText>
-        <View style={{ width: "60%", marginLeft: "auto" }}>
-          <SegmentedButton
-            user={gender}
-            setUser={setGender}
-            value1={Gender.MALE}
-            value2={Gender.FEMALE}
-          />
+    <ThemeScroll>
+      <ThemeView>
+        <Spacer size={4} />
+        <TitleText>Profile</TitleText>
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("CameraScreen");
+            }}
+          >
+            {!photo ? (
+              <Avatar.Icon
+                size={120}
+                icon="human"
+                backgroundColor={colors.error}
+              />
+            ) : (
+              <Avatar.Image size={180} source={{ uri: photo }} />
+            )}
+          </TouchableOpacity>
         </View>
-      </RowContainer>
-      <Spacer size={2} />
-      <ThemeButton
-        onPress={handleSubmit(onSave)}
-        disabled={!isFormDirty}
-        icon={loading ? null : "check-all"}
-        textColor="#F1F1F1"
-        loading={loading}
-      >
-        <ThemeButtonText>
-          {!dbUser?.username ? "Save" : "Update"}
-        </ThemeButtonText>
-      </ThemeButton>
-      <ThemeButton
-        onPress={() => Auth.signOut()}
-        icon="logout"
-        buttonColor="#e3e3e3"
-        textColor="#363636"
-      >
-        Logout
-      </ThemeButton>
-    </ThemeView>
+        <SubtitleText>{dbUser?.email}</SubtitleText>
+        <CustomInput
+          name="username"
+          control={control}
+          label="Username"
+          rules={{
+            required: "Full Name is required",
+            minLength: {
+              value: 3,
+              message: "Full Name should be at least 5 characters long",
+            },
+            maxLength: {
+              value: 15,
+              message: "Full Name should be max 32 characters long",
+            },
+          }}
+        />
+        <CustomInput
+          name="fullName"
+          control={control}
+          label="Full Name"
+          rules={{
+            required: "Full Name is required",
+            minLength: {
+              value: 5,
+              message: "Full Name should be at least 5 characters long",
+            },
+            maxLength: {
+              value: 32,
+              message: "Full Name should be max 32 characters long",
+            },
+          }}
+        />
+        <CustomInput
+          name="mobile"
+          control={control}
+          label="Phone Number"
+          rules={{
+            required: "Phone Number is required",
+            pattern: {
+              value: MOBILE_REGEX,
+              message: "Phone Number is invalid",
+            },
+          }}
+          keyboardType="phone-pad"
+        />
+        <Pressable
+          onPress={handleToggleDatePicker}
+          style={{ width: "100%", alignItems: "center" }}
+        >
+          <ThemeInput
+            value={birthday?.toLocaleDateString("fr-FR")}
+            label={"Date of Birth"}
+            editable={false}
+          />
+        </Pressable>
+        {showDatePicker && (
+          <DateTimePicker
+            value={birthday}
+            mode="date"
+            display="spinner"
+            onChange={handleDateChange}
+            maximumDate={new Date()}
+            minimumDate={new Date("1920-1-1")}
+          />
+        )}
+        <CustomInput name="address" control={control} label="Address" />
+        <RowContainer>
+          <SubtitleText>Gender : </SubtitleText>
+          <View style={{ width: "45%", marginLeft: 70 }}>
+            <SegmentedButton
+              user={gender}
+              setUser={setGender}
+              value1={Gender.MALE}
+              value2={Gender.FEMALE}
+            />
+          </View>
+        </RowContainer>
+        <Spacer size={2} />
+        <ThemeButton
+          onPress={handleSubmit(onSave)}
+          disabled={!isFormDirty}
+          icon={loading ? null : "check-all"}
+          textColor="#F1F1F1"
+          loading={loading}
+        >
+          <ThemeButtonText>
+            {!dbUser?.username ? "Save" : "Update"}
+          </ThemeButtonText>
+        </ThemeButton>
+        <ThemeButton
+          onPress={() => Auth.signOut()}
+          icon="logout"
+          buttonColor="#e3e3e3"
+          textColor="#363636"
+        >
+          Logout
+        </ThemeButton>
+        <Spacer size={3} />
+      </ThemeView>
+    </ThemeScroll>
   );
 };
 

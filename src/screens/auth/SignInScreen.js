@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  useWindowDimensions,
-  ScrollView,
-  Text,
-} from "react-native";
+import { Text } from "react-native";
 import { Avatar } from "react-native-paper";
 import { Auth } from "aws-amplify";
 import { Alert } from "react-native";
@@ -14,6 +9,7 @@ import {
   Spacer,
   ThemeButton,
   ThemeButtonText,
+  ThemeScroll,
   ThemeView,
   TitleText,
   theme,
@@ -23,7 +19,6 @@ import Thumb from "../../../assets/thumb.png";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import SocialSignInButtons from "../../components/SocialSignInButtons";
-import SegmentedButton from "../../components/SegmentedButton";
 
 const SignInScreen = ({ route, navigation }) => {
   const newAccount = route?.params?.newAccount;
@@ -54,15 +49,12 @@ const SignInScreen = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.root}>
-      <Avatar.Image
-        size={180}
-        source={newAccount ? Thumb : Logo}
-        style={styles.logo}
-      />
-      {/* <SegmentedButton user={user} setUser={setUser} /> */}
-
+    <ThemeScroll>
       <ThemeView>
+        <Spacer size={2} />
+        <Avatar.Image size={180} source={newAccount ? Thumb : Logo} />
+        {/* <SegmentedButton user={user} setUser={setUser} /> */}
+
         {/* <Spacer size={3} /> */}
         {newAccount ? (
           <>
@@ -123,20 +115,8 @@ const SignInScreen = ({ route, navigation }) => {
           </>
         )}
       </ThemeView>
-    </ScrollView>
+    </ThemeScroll>
   );
 };
-
-const styles = StyleSheet.create({
-  root: {
-    backgroundColor: theme.colors.background,
-    flex: 1,
-  },
-  logo: {
-    marginTop: theme.space[6],
-    alignSelf: "center",
-    backgroundColor: theme.colors.background,
-  },
-});
 
 export default SignInScreen;

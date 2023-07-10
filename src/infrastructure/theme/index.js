@@ -37,12 +37,18 @@ export const ThemeView = styled.View`
   align-items: center;
   background-color: ${colors.background};
 `;
+export const ThemeScroll = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+})`
+  flex: 1;
+  padding: 10px;
+  background-color: ${colors.background};
+`;
 export const RowContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 80%;
-`;
+`; //see where its used width: 100%;
 export const ThemeButtonText = styled.Text`
   font-size: 16px;
   font-weight: ${fontWeights.bold};

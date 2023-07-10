@@ -6,20 +6,19 @@ import Logo1 from "../../../assets/tina.png";
 import {
   RowContainer,
   Spacer,
+  ThemeScroll,
   ThemeView,
   TitleText,
   theme,
 } from "../../infrastructure/theme";
-import { ScrollView } from "react-native-gesture-handler";
 import { CustomParagraph } from "../../components/CustomParagraph";
+import StaffContainer from "../../components/StaffContainer";
 
 const AboutUs = () => {
   return (
-    <ScrollView
-      style={{ backgroundColor: theme.colors.background, flex: 1, padding: 10 }}
-    >
+    <ThemeScroll>
       <ThemeView>
-        <Spacer size={5}>
+        <Spacer size={4}>
           <TitleText>À propos de nous</TitleText>
         </Spacer>
         <CustomParagraph
@@ -43,30 +42,25 @@ const AboutUs = () => {
           txt="   Notre application facilite la prise de rendez-vous avec des médecins dans différentes spécialités, en évitant les longues attentes et les déplacements inutiles. Vous pouvez choisir le créneau horaire qui vous convient et réserver votre rendez-vous en ligne."
         />
         <TitleText>Notre staff</TitleText>
+        <Spacer size={4}>
+          <RowContainer style={{ flexWrap: "wrap", flexGrow: 1 }}>
+            <StaffContainer
+              logo={Logo}
+              txt="Tahar is our proud engineer and developper he has more than a whole year of experience"
+            />
+            <StaffContainer
+              logo={Logo1}
+              txt="Tina is our proud Dr and head dr. she has no experience at all, run away she'll kill u"
+            />
+            <StaffContainer
+              logo={Logo1}
+              txt="Tina is our proud Dr and head dr. she has no experience at all, run away she'll kill u"
+            />
+          </RowContainer>
+        </Spacer>
       </ThemeView>
-      <RowContainer>
-        <Avatar.Image size={100} source={Logo} style={styles.logo} />
-        <Text style={{ padding: 10 }}>
-          tahar is our proud engineer and developper he has more than a whole
-          year of experience
-        </Text>
-      </RowContainer>
-      <RowContainer>
-        <Avatar.Image size={100} source={Logo1} style={styles.logo} />
-        <Text style={{ padding: 10 }}>
-          Tina is our proud Dr and head dr. she has no experience at all, run
-          away she'll kill u
-        </Text>
-      </RowContainer>
-    </ScrollView>
+    </ThemeScroll>
   );
 };
 
 export default AboutUs;
-
-const styles = StyleSheet.create({
-  logo: {
-    // marginTop: theme.space[6],
-    // alignSelf: "center",
-  },
-});

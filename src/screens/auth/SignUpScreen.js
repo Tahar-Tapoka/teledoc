@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { useState } from "react";
+import { Text, StyleSheet } from "react-native";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import SocialSignInButtons from "../../components/SocialSignInButtons";
@@ -7,6 +7,7 @@ import {
   Spacer,
   ThemeButton,
   ThemeButtonText,
+  ThemeScroll,
   ThemeView,
   TitleText,
   theme,
@@ -60,12 +61,9 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      style={{ backgroundColor: theme.colors.background, flex: 1 }}
-    >
+    <ThemeScroll>
       <ThemeView>
-        <Spacer size={6}>
+        <Spacer size={5}>
           <TitleText>Create a new account</TitleText>
         </Spacer>
         <CustomInput
@@ -128,7 +126,7 @@ const SignUpScreen = ({ navigation }) => {
           type="TERTIARY"
         />
       </ThemeView>
-    </ScrollView>
+    </ThemeScroll>
   );
 };
 
