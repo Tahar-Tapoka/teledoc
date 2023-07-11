@@ -2,14 +2,52 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const Status = {
+  "ACTIVE": "ACTIVE",
+  "INACTIVE": "INACTIVE",
+  "VALIDATING": "VALIDATING",
+  "DISABLED": "DISABLED"
+};
+
+const Speciality = {
+  "MEDECINE_GENERALE": "MEDECINE_GENERALE",
+  "PEDIATRIE": "PEDIATRIE",
+  "GYNECOLOGIE": "GYNECOLOGIE",
+  "CARDIOLOGIE": "CARDIOLOGIE",
+  "DERMATOLOGIE": "DERMATOLOGIE",
+  "PSYCHIATRIE": "PSYCHIATRIE",
+  "ORTHOPEDIE": "ORTHOPEDIE",
+  "OPHTALMOLOGIE": "OPHTALMOLOGIE",
+  "ORL": "ORL",
+  "NEUROLOGIE": "NEUROLOGIE",
+  "RADIOLOGIE": "RADIOLOGIE",
+  "ANESTHESIOLOGIE": "ANESTHESIOLOGIE",
+  "NEPHROLOGIE": "NEPHROLOGIE",
+  "PNEUMOLOGIE": "PNEUMOLOGIE",
+  "HEMATOLOGIE": "HEMATOLOGIE",
+  "ONCOLOGIE": "ONCOLOGIE",
+  "ENDOCRINOLOGIE": "ENDOCRINOLOGIE",
+  "GASTRO_ENTEROLOGIE": "GASTRO_ENTEROLOGIE",
+  "RHUMATOLOGIE": "RHUMATOLOGIE",
+  "REEDUCATION_FONCTIONNELLE": "REEDUCATION_FONCTIONNELLE",
+  "EUROLOGIE": "EUROLOGIE",
+  "NEURO_CHIRURGIE": "NEURO_CHIRURGIE",
+  "INFECTIOLOGIE": "INFECTIOLOGIE"
+};
+
 const Gender = {
   "MALE": "MALE",
   "FEMALE": "FEMALE"
 };
 
-const { Patient } = initSchema(schema);
+const { Review, Consultant, Patient, PatientConsultant } = initSchema(schema);
 
 export {
+  Review,
+  Consultant,
   Patient,
+  PatientConsultant,
+  Status,
+  Speciality,
   Gender
 };

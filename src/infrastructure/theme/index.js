@@ -47,8 +47,8 @@ export const ThemeScroll = styled.ScrollView.attrs({
 export const RowContainer = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: center;
 `; //see where its used width: 100%;
+// justify-content: center;
 export const ThemeButtonText = styled.Text`
   font-size: 16px;
   font-weight: ${fontWeights.bold};

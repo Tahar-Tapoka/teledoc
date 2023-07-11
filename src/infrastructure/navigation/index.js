@@ -21,63 +21,62 @@ import { MyDrawer } from "./Drawer";
 import { AppNavigator } from "./AppNavigator";
 import { AccountNavigator } from "./AccountNavigator";
 
-const Stack = createStackNavigator();
+// const Stack = createStackNavigator();
 
-const StackNavigatror = () => {
-  const { dbUser, authUser } = useAuthContext();
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {dbUser ? (
-        <>
-          {dbUser.username ? (
-            <>
-              <Stack.Screen
-                name="AccountCreated"
-                component={AccountCreatedScreen}
-                initialParams={{ user: dbUser?.username }}
-              />
-              <Stack.Screen
-                name="Profile"
-                component={ProfileScreen}
-                initialParams={{ user: dbUser }}
-              />
-              <Stack.Screen name="CameraScreen" component={CameraScreen} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen
-                name="Profile"
-                component={ProfileScreen}
-                initialParams={{ user: dbUser }}
-              />
-              <Stack.Screen name="CameraScreen" component={CameraScreen} />
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
-          <Stack.Screen
-            name="ForgotPassword"
-            component={ForgotPasswordScreen}
-          />
-          <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
-        </>
-      )}
-      <Stack.Screen name="ContactUs" component={ContactUs} />
-      <Stack.Screen name="AboutUs" component={AboutUs} />
-      <Stack.Screen name="Policies" component={PoliciesScreen} />
-    </Stack.Navigator>
-  );
-};
+// const StackNavigatror = () => {
+//   const { dbUser, authUser } = useAuthContext();
+//   return (
+//     <Stack.Navigator screenOptions={{ headerShown: false }}>
+//       {dbUser ? (
+//         <>
+//           {dbUser.username ? (
+//             <>
+//               <Stack.Screen
+//                 name="AccountCreated"
+//                 component={AccountCreatedScreen}
+//                 initialParams={{ user: dbUser?.username }}
+//               />
+//               <Stack.Screen
+//                 name="Profile"
+//                 component={ProfileScreen}
+//                 initialParams={{ user: dbUser }}
+//               />
+//               <Stack.Screen name="CameraScreen" component={CameraScreen} />
+//             </>
+//           ) : (
+//             <>
+//               <Stack.Screen
+//                 name="Profile"
+//                 component={ProfileScreen}
+//                 initialParams={{ user: dbUser }}
+//               />
+//               <Stack.Screen name="CameraScreen" component={CameraScreen} />
+//             </>
+//           )}
+//         </>
+//       ) : (
+//         <>
+//           <Stack.Screen name="SignIn" component={SignInScreen} />
+//           <Stack.Screen name="SignUp" component={SignUpScreen} />
+//           <Stack.Screen name="ConfirmEmail" component={ConfirmEmailScreen} />
+//           <Stack.Screen
+//             name="ForgotPassword"
+//             component={ForgotPasswordScreen}
+//           />
+//           <Stack.Screen name="NewPassword" component={NewPasswordScreen} />
+//         </>
+//       )}
+//       <Stack.Screen name="ContactUs" component={ContactUs} />
+//       <Stack.Screen name="AboutUs" component={AboutUs} />
+//       <Stack.Screen name="Policies" component={PoliciesScreen} />
+//     </Stack.Navigator>
+//   );
+// };
 
 const Navigation = () => {
   const { dbUser, authUser } = useAuthContext();
-  if (authUser === undefined) {
-    return <LoadingScreen />;
-  }
+  if (authUser === undefined) return <LoadingScreen />;
+
   return (
     <NavigationContainer>
       {dbUser ? <AppNavigator /> : <AccountNavigator />}

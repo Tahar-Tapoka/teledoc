@@ -21,6 +21,7 @@ import { Divider } from "react-native-paper";
 import { View } from "react-native";
 import { ThemeView, theme } from "../theme";
 import { useWindowDimensions } from "react-native";
+import { LocationContextProvider } from "../../contexts/LocationContext";
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -78,7 +79,7 @@ const CustomDrawerContent = (props) => {
       />
       <View
         style={{
-          marginTop: 100,
+          marginTop: "auto", //100,
           borderBottomColor: "lightgray",
           borderBottomWidth: 1,
         }}
@@ -97,12 +98,14 @@ const CustomDrawerContent = (props) => {
 };
 
 const BottomTabNavigator = () => (
-  <Tab.Navigator screenOptions={createScreenOptions}>
-    <Tab.Screen name="HomeScreen" component={HomeScreen} />
-    <Tab.Screen name="Notifications" component={NotificationScreen} />
-    <Tab.Screen name="DrNearMe" component={DrNearMeScreen} />
-    <Tab.Screen name="Settings" component={SettingsNavigator} />
-  </Tab.Navigator>
+  <LocationContextProvider>
+    <Tab.Navigator screenOptions={createScreenOptions}>
+      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      <Tab.Screen name="Notifications" component={NotificationScreen} />
+      <Tab.Screen name="DrNearMe" component={DrNearMeScreen} />
+      <Tab.Screen name="Settings" component={SettingsNavigator} />
+    </Tab.Navigator>
+  </LocationContextProvider>
 );
 
 export const AppNavigator = () => {

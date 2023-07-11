@@ -7,7 +7,7 @@ const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(undefined);
-  const [dbUser, setDbUser] = useState(null);
+  const [dbUser, setDbUser] = useState(undefined);
   const sub = authUser?.attributes.sub;
   console.log("sub ctx:", sub);
 

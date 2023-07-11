@@ -1,3 +1,64 @@
+enum Status {
+  ACTIVE
+  INACTIVE
+  VALIDATING
+  DISABLED
+}
+
+type Review @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  description: String
+  score: Int
+  consultantID: ID! @index(name: "byConsultant")
+  patientID: ID! @index(name: "byPatient")
+}
+
+enum Speciality {
+  MEDECINE_GENERALE
+  PEDIATRIE
+  GYNECOLOGIE
+  CARDIOLOGIE
+  DERMATOLOGIE
+  PSYCHIATRIE
+  ORTHOPEDIE
+  OPHTALMOLOGIE
+  ORL
+  NEUROLOGIE
+  RADIOLOGIE
+  ANESTHESIOLOGIE
+  NEPHROLOGIE
+  PNEUMOLOGIE
+  HEMATOLOGIE
+  ONCOLOGIE
+  ENDOCRINOLOGIE
+  GASTRO_ENTEROLOGIE
+  RHUMATOLOGIE
+  REEDUCATION_FONCTIONNELLE
+  EUROLOGIE
+  NEURO_CHIRURGIE
+  INFECTIOLOGIE
+}
+
+type Consultant @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  full_name: String
+  email: AWSEmail
+  sub: String
+  mobile: String
+  address: String
+  lat: Float
+  lng: Float
+  picture: String
+  speciality: Speciality
+  score: Float
+  diplome: String
+  nbr_patient: Int
+  descreprtion: String
+  status: Status
+  Reviews: [Review] @hasMany(indexName: "byConsultant", fields: ["id"])
+  patients: [Patient] @manyToMany(relationName: "PatientConsultant")
+}
+
 enum Gender {
   MALE
   FEMALE
@@ -16,5 +77,7 @@ type Patient @model @auth(rules: [{allow: public}]) {
   address: String
   picture: String
   username: String
+  Reviews: [Review] @hasMany(indexName: "byPatient", fields: ["id"])
+  Consultants: [Consultant] @manyToMany(relationName: "PatientConsultant")
 }
  
