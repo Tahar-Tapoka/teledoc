@@ -6,39 +6,35 @@ import { RowContainer, ThemeView } from "../infrastructure/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../infrastructure/theme/colors";
 import { Pressable } from "react-native";
+import { Callout, CalloutSubview } from "react-native-maps";
 
-const CompactImage = styled.Image`
+export const CompactImage = styled.Image`
   border-radius: 100px;
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
 `;
 
-const Item = styled.View.attrs({ elevation: 5 })`
+const Item = styled.View`
+  flex: 1;
   padding: 5px;
-  max-width: 140px;
+  width: 140px;
   align-items: center;
   border-radius: 10px;
+  background-color: ${colors.background};
 `;
-//   background-color: ${colors.background};
 
-export const CompactDrInfo = ({ dr }) => {
-  //   const Image = Platform.OS === "android" ? CompactWebview : CompactImage;
-  const [toggle, setToggle] = useState(false);
-  const speciality =
-    dr.speciality.charAt(0) + dr.speciality.slice(1).toLowerCase();
-  return (
-    <TouchableOpacity onPress={() => setToggle(!toggle)}>
-      <CompactImage source={{ uri: dr.picture }} />
-      {toggle && (
-        <Item>
-          <Text>Dr. {dr.full_name}</Text>
-          <Text>{speciality}</Text>
-          <RowContainer>
-            <Text style={{ marginLeft: 5 }}>{dr.score.toFixed(1)}</Text>
-            <Ionicons name="star" size={16} color="gold" />
-          </RowContainer>
-        </Item>
-      )}
-    </TouchableOpacity>
-  );
-};
+export const CompactDrInfo = ({ dr }) => (
+  <Callout>
+    <Item>
+      <Text>Dr. {dr.full_name}</Text>
+      <Text>
+        {dr.speciality.charAt(0) + dr.speciality.slice(1).toLowerCase()}
+      </Text>
+      <RowContainer>
+        <Text style={{ marginRight: 5 }}>{dr.score.toFixed(1)}</Text>
+        <Ionicons name="star" size={16} color="gold" />
+      </RowContainer>
+    </Item>
+    {/* <CalloutSubview style={{ marginLeft: 5 }} /> */}
+  </Callout>
+);

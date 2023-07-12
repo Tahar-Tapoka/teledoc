@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useMemo, useRef } from "react";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 import { useLocationContext } from "../../contexts/LocationContext";
-import { CompactDrInfo } from "../../components/CompactDrInfo";
+import { CompactDrInfo, CompactImage } from "../../components/CompactDrInfo";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import LoadingScreen from "../../components/LoadingScreen";
 import { DrItem } from "../../components/DrItem";
@@ -13,15 +13,22 @@ const DrNearMeScreen = ({ navigation }) => {
   const snapPoints = useMemo(() => ["12%", "95%"], []);
   console.log(location);
 
-  if (!location) return <LoadingScreen />;
+  // if (!location) return <LoadingScreen />;
 
   return (
     <View style={{ flex: 1 }}>
       <MapView
+        showsUserLocation
+        initialRegion={{
+          latitude: 35.61595421,
+          longitude: 2.7924221,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.02,
+        }}
         style={{ width: "100%", height: "100%" }}
         region={{
-          latitude: location.latitude,
-          longitude: location.longitude,
+          latitude: location?.latitude,
+          longitude: location?.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.02,
         }}
@@ -29,13 +36,14 @@ const DrNearMeScreen = ({ navigation }) => {
         {drs?.map((dr) => (
           <Marker
             key={dr.id}
-            title={dr.full_name}
-            description={dr.speciality}
+            // title={dr.full_name}
+            // description={dr.speciality}
             coordinate={{
               latitude: dr.lat,
               longitude: dr.lng,
             }}
           >
+            <CompactImage source={{ uri: dr.picture }} />
             <CompactDrInfo dr={dr} />
           </Marker>
         ))}

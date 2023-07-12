@@ -81,7 +81,7 @@ export const ProfileScreen = ({ navigation }) => {
     }
     setLoading(false);
     Keyboard.dismiss();
-    navigation.navigate("AccountCreated", { user: dbUser?.username });
+    navigation.navigate("HomeScreen");
   };
 
   const handleDateChange = (event, date) => {

@@ -25,6 +25,10 @@ export const DrItem = ({ dr, navigation }) => {
         {review && (
           <Text style={styles.description}>{review?.description}</Text>
         )}
+      </View>
+      <View
+        style={{ justifyContent: "center", alignItems: "center", padding: 10 }}
+      >
         <RowContainer>
           <Text style={{ marginRight: 5 }}>{dr.score.toFixed(1)}</Text>
           <Ionicons name="star" size={16} color="gold" />
