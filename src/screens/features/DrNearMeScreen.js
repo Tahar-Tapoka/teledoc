@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import MapView, { Callout, Marker } from "react-native-maps";
 import { useLocationContext } from "../../contexts/LocationContext";
 import { CompactDrInfo, CompactImage } from "../../components/CompactDrInfo";
@@ -10,7 +10,8 @@ import { DrItem } from "../../components/DrItem";
 const DrNearMeScreen = ({ navigation }) => {
   const { drs, location } = useLocationContext();
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["12%", "95%"], []);
+  const snapPoints = useMemo(() => ["15%", "95%"], []);
+  const [selectedDr, setSelectedDr] = useState();
   console.log(location);
 
   // if (!location) return <LoadingScreen />;
@@ -42,6 +43,7 @@ const DrNearMeScreen = ({ navigation }) => {
               latitude: dr.lat,
               longitude: dr.lng,
             }}
+            onPress={() => setSelectedDr(dr)}
           >
             <CompactImage source={{ uri: dr.picture }} />
             <CompactDrInfo dr={dr} />
@@ -53,18 +55,24 @@ const DrNearMeScreen = ({ navigation }) => {
         snapPoints={snapPoints}
         handleIndicatorStyle={{ backgroundColor: "gray", width: 100 }}
       >
-        <View style={styles.contentContainer}>
-          <Text style={{ fontWeight: 600 }}>You're Now Online 🎉</Text>
-          <Text style={{ color: "grey", marginTop: 5 }}>
-            {drs.length ? drs.length : "No"} Available Nearby Doctors
-          </Text>
-        </View>
-        <BottomSheetFlatList
-          data={drs}
-          renderItem={({ item }) => (
-            <DrItem dr={item} navigation={navigation} />
-          )}
-        />
+        {selectedDr ? (
+          <DrItem dr={selectedDr} navigation={navigation} />
+        ) : (
+          <>
+            <View style={styles.contentContainer}>
+              <Text style={{ fontWeight: 600 }}>You're Now Online 🎉</Text>
+              <Text style={{ color: "grey", marginTop: 5 }}>
+                {drs.length ? drs.length : "No"} Available Nearby Doctors
+              </Text>
+            </View>
+            {/* <BottomSheetFlatList
+              data={drs}
+              renderItem={({ item }) => (
+                <DrItem dr={item} navigation={navigation} />
+              )}
+            /> */}
+          </>
+        )}
       </BottomSheet>
     </View>
   );

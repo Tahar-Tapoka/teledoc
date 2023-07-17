@@ -22,6 +22,8 @@ import { View } from "react-native";
 import { ThemeView, theme } from "../theme";
 import { useWindowDimensions } from "react-native";
 import { LocationContextProvider } from "../../contexts/LocationContext";
+import DrProfileScreen from "../../screens/features/DrProfileScreen";
+import DrNavigator from "./DrNavigator";
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -102,7 +104,7 @@ const BottomTabNavigator = () => (
     <Tab.Navigator screenOptions={createScreenOptions}>
       <Tab.Screen name="HomeScreen" component={HomeScreen} />
       <Tab.Screen name="Notifications" component={NotificationScreen} />
-      <Tab.Screen name="DrNearMe" component={DrNearMeScreen} />
+      <Tab.Screen name="DrNearMe" component={DrNavigator} />
       <Tab.Screen name="Settings" component={SettingsNavigator} />
     </Tab.Navigator>
   </LocationContextProvider>

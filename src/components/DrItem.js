@@ -1,85 +1,149 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { DataStore } from "aws-amplify";
-import { Review, User } from "../models";
-import { RowContainer } from "../infrastructure/theme";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import styled from "styled-components/native";
+
+import { Review } from "../models";
+import { RowContainer, ThemeButton, TitleText } from "../infrastructure/theme";
+import { ReviewItem } from "./ReviewItem";
+import { colors } from "../infrastructure/theme/colors";
+import { fontSizes, fontWeights, fonts } from "../infrastructure/theme/fonts";
+
+export const Item = styled.TouchableOpacity`
+  border-color: ${colors.accent};
+  border-width: 2px;
+  border-radius: 10px;
+  flex-direction: row;
+  margin-top: 5px;
+  background-color: ${colors.background};
+`;
+export const Info = styled.View`
+  margin: 5px;
+`;
+export const InfoContainer = styled.View`
+  max-width: 80%;
+`;
+export const DrImage = styled.Image`
+  width: 20%;
+  margin: 3px;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+`;
+export const Title = styled.Text`
+  font-weight: ${fontWeights.bold};
+  font-size: ${fontSizes.title}px;
+`;
+export const DescriptionText = styled.Text`
+  color: ${colors.backdrop};
+`;
+export const NotificationText = styled.Text`
+  color: ${colors.notification};
+`;
+// export const Link = styled.Pressable`
+//   border-color: ${colors.accent};
+//   border-width: 1px;
+//   border-radius: 10px;
+// `;
+export const Feedback = styled.View`
+  margin-left: auto;
+  margin-right: 25px;
+  justify-content: center;
+`;
+export const FeedbackText = styled.Text`
+  margin-left: 5px;
+  font-weight: ${fontWeights.bold};
+  margin-vertical: 3px;
+`;
+
+export const Rating = ({ rating }) => (
+  <RowContainer>
+    <MaterialCommunityIcons name="star" size={18} color={"#FAC213"} />
+    <FeedbackText>{rating.toFixed(1)}</FeedbackText>
+  </RowContainer>
+);
+export const EmojiText = ({ txt, icon, color }) => (
+  <RowContainer>
+    <MaterialCommunityIcons name={icon} size={18} color={color} />
+    <FeedbackText>{txt}</FeedbackText>
+  </RowContainer>
+);
 
 export const DrItem = ({ dr, navigation }) => {
-  const [review, setReview] = useState();
+  const [reviews, setReviews] = useState();
+
   useEffect(() => {
     if (dr)
       DataStore.query(Review, (rv) => rv.consultantID.eq(dr.id)).then(
-        setReview
+        setReviews
       );
   }, [dr]);
+
+  const onVideoConsult = () => console.warn("Book Video Consult");
+  const onBookAppointement = () => console.warn("Book an Appointement");
+
   return (
-    <View style={styles.item}>
-      <Image source={{ uri: dr.picture }} style={styles.image} />
-      <View style={styles.info}>
-        <Text style={styles.title}>Dr. {dr.full_name}</Text>
-        <Text style={styles.description}>{dr.address}</Text>
-        <Text style={styles.subtitle}>Speciality:</Text>
-        <Text style={styles.description}>{dr.speciality}</Text>
-        {review && (
-          <Text style={styles.description}>{review?.description}</Text>
-        )}
-      </View>
-      <View
-        style={{ justifyContent: "center", alignItems: "center", padding: 10 }}
-      >
-        <RowContainer>
-          <Text style={{ marginRight: 5 }}>{dr.score.toFixed(1)}</Text>
-          <Ionicons name="star" size={16} color="gold" />
-        </RowContainer>
-        <RowContainer>
-          <Text style={{ marginRight: 5 }}>{dr.nbr_patient}</Text>
-          <Text style={{ marginLeft: 5 }}>Patient</Text>
-        </RowContainer>
-      </View>
-    </View>
+    <>
+      <Item onPress={() => navigation.navigate("DrProfileScreen", { dr: dr })}>
+        <DrImage source={{ uri: dr.picture }} />
+        <InfoContainer>
+          <TitleText>Dr. {dr.full_name}</TitleText>
+          <RowContainer>
+            <Info>
+              <DescriptionText>{dr.speciality}</DescriptionText>
+              {/* dr.speciality.charAt(0) + dr.speciality.slice(1).toLowerCase() */}
+              <NotificationText>x Years of Experience</NotificationText>
+              {/* <Link
+            onPress={() => navigation.navigate("DrProfileScreen", { dr: dr })}
+          >
+            <EmojiText
+              txt="View Profile"
+              icon="open-in-new"
+              color={colors.link}
+            />
+          </Link> */}
+            </Info>
+
+            <Feedback>
+              <Rating rating={dr.score} />
+              <EmojiText
+                txt={`${dr.nbr_patient} Patient`}
+                icon={"emoticon-sick"}
+                color={colors.accent}
+              />
+              <EmojiText
+                txt={`${reviews?.length} Reviews`}
+                icon={"comment-text-multiple"}
+                color={colors.accent}
+              />
+            </Feedback>
+          </RowContainer>
+          <RowContainer style={{ flexWrap: "wrap", marginVertical: 5 }}>
+            <ThemeButton
+              onPress={onVideoConsult}
+              icon="message-video"
+              buttonColor={colors.primary} //"#E7EAF4"
+              textColor="#E7EAF4"
+              style={{ maxWidth: "45%" }}
+            >
+              Video Consult
+            </ThemeButton>
+            <ThemeButton
+              onPress={onBookAppointement}
+              icon="calendar-account-outline"
+              buttonColor={colors.accent} //"#E7EAF4"
+              textColor="#E7EAF4"
+              style={{ maxWidth: "45%" }}
+            >
+              Appointement
+            </ThemeButton>
+          </RowContainer>
+        </InfoContainer>
+      </Item>
+
+      {reviews?.map((review) => (
+        <ReviewItem review={review} key={review.id} />
+      ))}
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    borderColor: "green",
-    borderWidth: 2,
-    borderRadius: 10,
-    flexDirection: "row",
-    marginVertical: 5,
-  },
-  image: {
-    width: "20%",
-    margin: 3,
-    borderBottomLeftRadius: 10,
-    borderTopLeftRadius: 10,
-  },
-  info: {
-    marginLeft: 5,
-    flex: 1,
-    marginVertical: 5,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  description: {
-    color: "grey",
-  },
-  subtitle: {
-    fontWeight: "bold",
-    fontSize: 16,
-    marginTop: 7,
-  },
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "10%",
-    marginLeft: "auto",
-    backgroundColor: "green",
-    borderBottomRightRadius: 5,
-    borderTopRightRadius: 5,
-  },
-});

@@ -11,6 +11,7 @@ export const colors = {
   notification: "#36D1C4",
   error: "#D0421B",
   success: "#138000",
+  link: "#1D5D9B",
   // brand: {
   //   primary: "#696AC3",
   //   secondary: "#5D6CC6",

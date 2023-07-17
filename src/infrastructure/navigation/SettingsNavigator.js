@@ -4,6 +4,7 @@ import {
 } from "@react-navigation/stack";
 import { CameraScreen } from "../../screens/auth/CameraScreen";
 import ProfileScreen from "../../screens/auth/ProfileScreen";
+
 const Stack = createStackNavigator();
 
 export const SettingsNavigator = () => {
