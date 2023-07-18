@@ -6,6 +6,11 @@ import { CompactDrInfo, CompactImage } from "../../components/CompactDrInfo";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import LoadingScreen from "../../components/LoadingScreen";
 import { DrItem } from "../../components/DrItem";
+import {
+  NotificationText,
+  Spacer,
+  SubtitleText,
+} from "../../infrastructure/theme";
 
 const DrNearMeScreen = ({ navigation }) => {
   const { drs, location } = useLocationContext();
@@ -13,6 +18,9 @@ const DrNearMeScreen = ({ navigation }) => {
   const snapPoints = useMemo(() => ["15%", "95%"], []);
   const [selectedDr, setSelectedDr] = useState();
   console.log(location);
+  const filteredDrs = drs
+    .filter((dr) => dr.id !== selectedDr?.id)
+    .filter((dr) => dr.speciality === selectedDr?.speciality);
 
   // if (!location) return <LoadingScreen />;
 
@@ -56,7 +64,22 @@ const DrNearMeScreen = ({ navigation }) => {
         handleIndicatorStyle={{ backgroundColor: "gray", width: 100 }}
       >
         {selectedDr ? (
-          <DrItem dr={selectedDr} navigation={navigation} />
+          <>
+            <DrItem dr={selectedDr} navigation={navigation} />
+            {filteredDrs[0] && (
+              <Spacer size={2}>
+                <SubtitleText style={{ alignSelf: "center", fontWeight: 600 }}>
+                  Other {selectedDr.speciality} Drs in the area
+                </SubtitleText>
+              </Spacer>
+            )}
+            <BottomSheetFlatList
+              data={filteredDrs}
+              renderItem={({ item }) => (
+                <DrItem dr={item} navigation={navigation} />
+              )}
+            />
+          </>
         ) : (
           <>
             <View style={styles.contentContainer}>
@@ -65,12 +88,12 @@ const DrNearMeScreen = ({ navigation }) => {
                 {drs.length ? drs.length : "No"} Available Nearby Doctors
               </Text>
             </View>
-            {/* <BottomSheetFlatList
+            <BottomSheetFlatList
               data={drs}
               renderItem={({ item }) => (
                 <DrItem dr={item} navigation={navigation} />
               )}
-            /> */}
+            />
           </>
         )}
       </BottomSheet>

@@ -32,6 +32,52 @@ export const ThemeInput = styled(TextInput).attrs({
   margin-vertical: ${space[2]}px;
   background-color: ${colors.surface};
 `;
+
+//------------------   Text   ----------------------------//
+export const ThemeButtonText = styled.Text`
+  font-size: 16px;
+  font-weight: ${fontWeights.bold};
+  color: #fff;
+`;
+export const SubtitleText = styled.Text`
+  font-size: 18px;
+`;
+// font-weight: ${fontWeights.bold};
+export const TitleText = styled.Text`
+  font-weight: ${fontWeights.medium};
+  font-size: ${fontSizes.title}px;
+  color: ${colors.text};
+`;
+
+export const NotificationText = styled.Text`
+  color: ${colors.notification};
+`;
+
+export const PostText = styled.Text`
+  color: #73737d;
+  font-size: 16px;
+  padding: 10px 0 0;
+  font-weight: ${fontWeights.regular};
+`;
+
+//------------------   View   ----------------------------//
+
+export const Container = styled.View`
+  flex: 1;
+  background-color: ${colors.background};
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+export const Spacer = styled.View`
+  margin-vertical: ${(props) => space[props.size]}px;
+`;
+
+export const PostContainer = styled.View`
+  padding: 10px 20px;
+  width: 100%;
+`;
+
 export const ThemeView = styled.View`
   flex: 1;
   align-items: center;
@@ -49,38 +95,3 @@ export const RowContainer = styled.View`
   align-items: center;
 `; //see where its used width: 100%;
 // justify-content: center;
-export const ThemeButtonText = styled.Text`
-  font-size: 16px;
-  font-weight: ${fontWeights.bold};
-  color: #fff;
-`;
-export const SubtitleText = styled.Text`
-  font-size: 18px;
-`;
-// font-weight: ${fontWeights.bold};
-export const TitleText = styled.Text`
-  font-weight: ${fontWeights.medium};
-  font-size: ${fontSizes.title}px;
-  color: ${colors.text};
-`;
-export const Container = styled.View`
-  flex: 1;
-  background-color: ${colors.background};
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-`;
-export const Spacer = styled.View`
-  margin-vertical: ${(props) => space[props.size]}px;
-`;
-
-export const PostContainer = styled.View`
-  padding: 10px 20px;
-  width: 100%;
-`;
-export const PostText = styled.Text`
-  color: #73737d;
-  font-size: 16px;
-  padding: 10px 0 0;
-  font-weight: ${fontWeights.regular};
-`;

@@ -4,8 +4,8 @@ import { DataStore } from "aws-amplify";
 import { Patient } from "../models";
 import Logo from "../../assets/user.png";
 import { Avatar } from "react-native-paper";
-import { NotificationText, Rating } from "./DrItem";
 import RatingBar from "./RatingBar";
+import { NotificationText } from "../infrastructure/theme";
 
 export const ReviewItem = ({ review }) => {
   const [patient, setPatient] = useState();

@@ -5,7 +5,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import styled from "styled-components/native";
 
 import { Review } from "../models";
-import { RowContainer, ThemeButton, TitleText } from "../infrastructure/theme";
+import {
+  NotificationText,
+  RowContainer,
+  ThemeButton,
+  TitleText,
+} from "../infrastructure/theme";
 import { ReviewItem } from "./ReviewItem";
 import { colors } from "../infrastructure/theme/colors";
 import { fontSizes, fontWeights, fonts } from "../infrastructure/theme/fonts";
@@ -30,16 +35,10 @@ export const DrImage = styled.Image`
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
 `;
-export const Title = styled.Text`
-  font-weight: ${fontWeights.bold};
-  font-size: ${fontSizes.title}px;
-`;
 export const DescriptionText = styled.Text`
   color: ${colors.backdrop};
 `;
-export const NotificationText = styled.Text`
-  color: ${colors.notification};
-`;
+
 // export const Link = styled.Pressable`
 //   border-color: ${colors.accent};
 //   border-width: 1px;
@@ -140,10 +139,10 @@ export const DrItem = ({ dr, navigation }) => {
           </RowContainer>
         </InfoContainer>
       </Item>
-
+      {/* {reviews?.length ? <TitleText>Reviews</TitleText> : null}
       {reviews?.map((review) => (
         <ReviewItem review={review} key={review.id} />
-      ))}
+      ))} */}
     </>
   );
 };
