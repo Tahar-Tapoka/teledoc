@@ -7,6 +7,11 @@ import { StatusBar } from "expo-status-bar";
 import { Amplify } from "aws-amplify";
 import config from "./src/aws-exports";
 import { AuthContextProvider } from "./src/contexts/AuthContext";
+import DrProfileScreen from "./src/screens/features/DrProfileScreen";
+
+import drs from "./assets/drs.json";
+import LoadingScreen from "./src/components/LoadingScreen";
+import { DrItem } from "./src/components/DrItem";
 
 Amplify.configure({
   ...config,
@@ -19,9 +24,12 @@ const App = () => {
   return (
     <PaperProvider theme={theme}>
       <View style={{ flex: 1 }}>
-        <AuthContextProvider>
+        <DrProfileScreen dr={drs[1]} />
+        {/* <DrItem dr={drs[0]} /> */}
+        {/* <LoadingScreen /> */}
+        {/* <AuthContextProvider>
           <Navigation />
-        </AuthContextProvider>
+        </AuthContextProvider> */}
         <StatusBar style="auto" />
       </View>
     </PaperProvider>

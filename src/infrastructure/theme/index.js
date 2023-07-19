@@ -67,7 +67,6 @@ export const Container = styled.View`
   background-color: ${colors.background};
   align-items: center;
   justify-content: center;
-  padding: 20px;
 `;
 export const Spacer = styled.View`
   margin-vertical: ${(props) => space[props.size]}px;
