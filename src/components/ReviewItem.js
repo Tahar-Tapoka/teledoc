@@ -1,74 +1,59 @@
-import { Image, StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 import { DataStore } from "aws-amplify";
 import { Patient } from "../models";
-import Logo from "../../assets/user.png";
 import { Avatar } from "react-native-paper";
-import RatingBar from "./RatingBar";
-import { NotificationText } from "../infrastructure/theme";
+import { RowContainer } from "../infrastructure/theme";
+import { colors } from "../infrastructure/theme/colors";
+import { AirbnbRating } from "react-native-ratings";
+import { styled } from "styled-components/native";
+import { fontWeights } from "../infrastructure/theme/fonts";
+
+const ReviewContainer = styled.View`
+  border-radius: 10px;
+  elevation: 2;
+  background-color: ${colors.onSurface};
+  padding: 10px;
+  margin-bottom: 3px;
+`;
+const HeaderContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const ReviewerName = styled.Text`
+  color: ${colors.accent};
+  font-weight: ${fontWeights.bold};
+  margin-left: 10px;
+`;
+
+const ReviewText = styled.Text`
+  color: ${colors.backdrop};
+  margin: 5px;
+`;
 
 export const ReviewItem = ({ review }) => {
+  //maybe refractor to a context------------------------------------------------
   const [patient, setPatient] = useState();
   useEffect(() => {
     if (review) DataStore.query(Patient, review.patientID).then(setPatient);
   }, [review]);
+  //----------------------------------------------------------------------------
   return (
-    <View style={styles.item}>
-      {/* Logo ------------------------------------------*/}
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Avatar.Icon size={24} icon={"account"} />
-        <NotificationText>{patient?.username}</NotificationText>
-      </View>
-      <View style={styles.info}>
-        <RatingBar rating={review.score} disabled />
-        <Text style={styles.description}>{review.description}</Text>
-      </View>
-    </View>
+    <ReviewContainer>
+      <HeaderContainer>
+        <RowContainer>
+          <Avatar.Icon size={30} icon={"account"} />
+          <ReviewerName>{patient?.username}</ReviewerName>
+        </RowContainer>
+        <AirbnbRating
+          isDisabled
+          defaultRating={review.score}
+          showRating={false}
+          size={16}
+          selectedColor={colors.accent}
+        />
+      </HeaderContainer>
+      <ReviewText>{review.description}</ReviewText>
+    </ReviewContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    borderColor: "pink",
-    borderWidth: 2,
-    borderRadius: 10,
-    flexDirection: "row",
-    padding: 10,
-    margin: 10,
-  },
-  image: {
-    width: "20%",
-    height: "30%",
-    margin: 3,
-    borderBottomLeftRadius: 10,
-    borderTopLeftRadius: 10,
-  },
-  info: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 5,
-    flex: 1,
-    marginVertical: 5,
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  description: {
-    color: "grey",
-  },
-  subtitle: {
-    fontWeight: "bold",
-    fontSize: 16,
-    marginTop: 7,
-  },
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "10%",
-    marginLeft: "auto",
-    backgroundColor: "green",
-    borderBottomRightRadius: 5,
-    borderTopRightRadius: 5,
-  },
-});

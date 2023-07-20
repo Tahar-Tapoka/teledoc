@@ -2,13 +2,14 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import {
   RowContainer,
+  Spacer,
   SubtitleText,
   TitleText,
 } from "../../infrastructure/theme";
 import { Dimensions } from "react-native";
 import { ImageBackground } from "react-native";
 import { DescriptionText } from "../../components/DrItem";
-import { Avatar, Chip } from "react-native-paper";
+import { Avatar } from "react-native-paper";
 import { TouchableOpacity } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 
@@ -31,9 +32,10 @@ const InfoIcon = ({ icon, label, text }) => (
     <DescriptionText>{text}</DescriptionText>
   </View>
 );
-const Tag = ({ item }) => (
+export const Tag = ({ item, children }) => (
   <View style={[styles.tag, { backgroundColor: item.color }]}>
     <Text style={styles.tagText}>{item.name}</Text>
+    {children}
   </View>
 );
 
@@ -81,7 +83,7 @@ const DrProfileScreen = ({ navigation, route, dr }) => {
     setSeeMore(!seeMore);
   };
   const toggleReview = () => {
-    fetchAllReviews(showAllReviews);
+    fetchAllReviews(!showAllReviews);
     setShowAllReviews(!showAllReviews);
   };
   const score = parseFloat(dr?.score).toFixed(1); // remove parseFolat homie
@@ -105,11 +107,10 @@ const DrProfileScreen = ({ navigation, route, dr }) => {
           position: "absolute",
           top: height / 3,
           width,
-          height: height / 1.42,
+          maxHeight: height / 1.55,
           backgroundColor: colors.background,
           borderTopLeftRadius: 25,
           borderTopRightRadius: 25,
-          elevation: 5,
           padding: 10,
         }}
       >
@@ -171,7 +172,7 @@ const DrProfileScreen = ({ navigation, route, dr }) => {
             >
               <TitleText>Reviews</TitleText>
               <Link
-                text={showAllReviews ? "View all Review" : "View less"}
+                text={!showAllReviews ? "View all Review" : "View less"}
                 onPress={toggleReview}
               />
             </View>
@@ -183,9 +184,7 @@ const DrProfileScreen = ({ navigation, route, dr }) => {
       </ScrollView>
       <View
         style={{
-          position: "absolute",
-          bottom: 10,
-          paddingLeft: width / 18,
+          paddingLeft: 20,
           backgroundColor: "rgba(128, 128, 128, 0.5)",
         }}
       >

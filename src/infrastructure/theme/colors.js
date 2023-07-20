@@ -7,7 +7,7 @@ export const colors = {
   disabled: "#F1F1F1",
   placeholder: "#EB6383",
   backdrop: "#757575",
-  onSurface: "#757575",
+  onSurface: "#DAFFFB",
   notification: "#36D1C4",
   error: "#D0421B",
   success: "#138000",

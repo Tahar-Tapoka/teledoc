@@ -12,6 +12,7 @@ import DrProfileScreen from "./src/screens/features/DrProfileScreen";
 import drs from "./assets/drs.json";
 import LoadingScreen from "./src/components/LoadingScreen";
 import { DrItem } from "./src/components/DrItem";
+import HomeScreen from "./src/screens/features/HomeScreen";
 
 Amplify.configure({
   ...config,
@@ -24,7 +25,8 @@ const App = () => {
   return (
     <PaperProvider theme={theme}>
       <View style={{ flex: 1 }}>
-        <DrProfileScreen dr={drs[1]} />
+        <HomeScreen />
+        {/* <DrProfileScreen dr={drs[1]} /> */}
         {/* <DrItem dr={drs[0]} /> */}
         {/* <LoadingScreen /> */}
         {/* <AuthContextProvider>
