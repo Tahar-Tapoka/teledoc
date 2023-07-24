@@ -7,6 +7,7 @@ import styled from "styled-components/native";
 import { Review } from "../models";
 import {
   NotificationText,
+  Rating,
   RowContainer,
   ThemeButton,
   TitleText,
@@ -56,13 +57,6 @@ export const FeedbackText = styled.Text`
   margin-vertical: 3px;
 `;
 
-export const Rating = ({ rating }) => (
-  <RowContainer>
-    <MaterialCommunityIcons name="star" size={18} color={"#FAC213"} />
-    <FeedbackText>{rating}</FeedbackText>
-    {/*.toFixed(1) homie get it back*/}
-  </RowContainer>
-);
 export const EmojiText = ({ txt, icon, color }) => (
   <RowContainer>
     <MaterialCommunityIcons name={icon} size={18} color={color} />

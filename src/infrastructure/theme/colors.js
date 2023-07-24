@@ -12,6 +12,7 @@ export const colors = {
   error: "#D0421B",
   success: "#138000",
   link: "#1D5D9B",
+  white: "#FFFF",
   // brand: {
   //   primary: "#696AC3",
   //   secondary: "#5D6CC6",

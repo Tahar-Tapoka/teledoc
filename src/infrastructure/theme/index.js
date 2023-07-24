@@ -4,6 +4,7 @@ import { space, lineHeights } from "./spacing";
 import { sizes } from "./sizes";
 import { fonts, fontWeights, fontSizes } from "./fonts";
 import { Button, TextInput } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export const theme = {
   colors,
@@ -60,6 +61,12 @@ export const PostText = styled.Text`
   font-weight: ${fontWeights.regular};
 `;
 
+export const FeedbackText = styled.Text`
+  margin-left: 2px;
+  font-weight: ${fontWeights.bold};
+  margin-vertical: 3px;
+`;
+
 //------------------   View   ----------------------------//
 
 export const Container = styled.View`
@@ -92,5 +99,20 @@ export const ThemeScroll = styled.ScrollView.attrs({
 export const RowContainer = styled.View`
   flex-direction: row;
   align-items: center;
+`;
+export const RatingContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  background-color: ${colors.surface};
+  border-radius: 10px;
+  width: 47px;
 `; //see where its used width: 100%;
 // justify-content: center;
+
+export const Rating = ({ rating }) => (
+  <RatingContainer>
+    <MaterialCommunityIcons name="star" size={18} color={"#FAC213"} />
+    <FeedbackText>{rating}</FeedbackText>
+    {/*.toFixed(1) homie get it back*/}
+  </RatingContainer>
+);

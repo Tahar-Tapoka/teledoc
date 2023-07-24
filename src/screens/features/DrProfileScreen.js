@@ -32,10 +32,9 @@ const InfoIcon = ({ icon, label, text }) => (
     <DescriptionText>{text}</DescriptionText>
   </View>
 );
-export const Tag = ({ item, children }) => (
+export const Tag = ({ item }) => (
   <View style={[styles.tag, { backgroundColor: item.color }]}>
     <Text style={styles.tagText}>{item.name}</Text>
-    {children}
   </View>
 );
 
