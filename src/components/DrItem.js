@@ -109,7 +109,7 @@ export const DrItem = ({ dr, navigation }) => {
             </Info>
 
             <Feedback>
-              <Rating rating={dr.score} />
+              <Rating rating={parseFloat(dr.score).toFixed(1)} />
               <EmojiText
                 txt={`${dr.nbr_patient} Patient`}
                 icon={"emoticon-sick"}

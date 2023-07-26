@@ -1,12 +1,8 @@
-import React, { useState } from "react";
 import styled from "styled-components/native";
-import { Platform, TouchableOpacity } from "react-native";
-import { Text } from "react-native";
-import { RowContainer, ThemeView } from "../infrastructure/theme";
-import { Ionicons } from "@expo/vector-icons";
+import { Rating } from "../infrastructure/theme";
 import { colors } from "../infrastructure/theme/colors";
-import { Pressable } from "react-native";
-import { Callout, CalloutSubview } from "react-native-maps";
+import { fontWeights } from "../infrastructure/theme/fonts";
+import { formatUpperCase } from "../functions";
 
 export const CompactImage = styled.Image`
   border-radius: 100px;
@@ -15,26 +11,25 @@ export const CompactImage = styled.Image`
 `;
 
 const Item = styled.View`
-  flex: 1;
-  padding: 5px;
+  padding: 3px;
   width: 140px;
   align-items: center;
   border-radius: 10px;
-  background-color: ${colors.background};
+  background-color: ${colors.onSurface};
+`;
+const ReviewerName = styled.Text`
+  color: ${colors.accent};
+  font-weight: ${fontWeights.bold};
+`;
+
+const ReviewText = styled.Text`
+  color: ${colors.backdrop};
 `;
 
 export const CompactDrInfo = ({ dr }) => (
-  <Callout>
-    <Item>
-      <Text>Dr. {dr.full_name}</Text>
-      <Text>
-        {dr.speciality.charAt(0) + dr.speciality.slice(1).toLowerCase()}
-      </Text>
-      <RowContainer>
-        <Text style={{ marginRight: 5 }}>{dr.score.toFixed(1)}</Text>
-        <Ionicons name="star" size={16} color="gold" />
-      </RowContainer>
-    </Item>
-    {/* <CalloutSubview style={{ marginLeft: 5 }} /> */}
-  </Callout>
+  <Item>
+    <ReviewerName>Dr. {dr.full_name}</ReviewerName>
+    <ReviewText>{formatUpperCase(dr.speciality)}</ReviewText>
+    <Rating rating={parseFloat(dr.score).toFixed(1)} />
+  </Item>
 );

@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
-import { Rating } from "../infrastructure/theme";
 import { colors } from "../infrastructure/theme/colors";
 import { fontWeights } from "../infrastructure/theme/fonts";
-//refractor??
+import { formatUpperCase } from "../functions";
+
+//maybe refractor some of these styles------------------------------------------------
 const CompactImage = styled.Image`
   border-radius: 100px;
   width: 70px;
@@ -31,11 +32,14 @@ const ReviewText = styled.Text`
   color: ${colors.backdrop};
   margin: 2px;
 `;
+//------------------------------------------------------------------------------------------------
 
 export const SpecialityItem = ({ speciality, navigation }) => (
   <Item
     onPress={() =>
-      console.warn('navigation.navigate("DrProfileScreen", {dr: dr})')
+      console.warn(
+        'navigation.navigate("SearchScreen", {searchQuery: speciality})'
+      )
     }
   >
     <CompactImage
@@ -43,8 +47,6 @@ export const SpecialityItem = ({ speciality, navigation }) => (
         uri: "https://cdn-icons-png.flaticon.com/512/5996/5996306.png",
       }}
     />
-    <ReviewerName>
-      {speciality.charAt(0) + speciality.slice(1).toLowerCase()}
-    </ReviewerName>
+    <ReviewerName>{formatUpperCase(speciality)}</ReviewerName>
   </Item>
 );

@@ -54,7 +54,9 @@ const DrNearMeScreen = ({ navigation }) => {
             onPress={() => setSelectedDr(dr)}
           >
             <CompactImage source={{ uri: dr.picture }} />
-            <CompactDrInfo dr={dr} />
+            <Callout>
+              <CompactDrInfo dr={dr} />
+            </Callout>
           </Marker>
         ))}
       </MapView>

@@ -25,13 +25,13 @@ const App = () => {
   return (
     <PaperProvider theme={theme}>
       <View style={{ flex: 1 }}>
-        <HomeScreen />
+        {/* <HomeScreen /> */}
         {/* <DrProfileScreen dr={drs[1]} /> */}
         {/* <DrItem dr={drs[0]} /> */}
         {/* <LoadingScreen /> */}
-        {/* <AuthContextProvider>
+        <AuthContextProvider>
           <Navigation />
-        </AuthContextProvider> */}
+        </AuthContextProvider>
         <StatusBar style="auto" />
       </View>
     </PaperProvider>

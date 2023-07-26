@@ -1,5 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { DataStore } from "aws-amplify";
+
 import { AppointementItem } from "../../components/AppointementItem";
 import {
   RowContainer,
@@ -8,50 +10,47 @@ import {
   ThemeScroll,
   TitleText,
 } from "../../infrastructure/theme";
-import { Searchbar } from "react-native-paper";
 
-import drs from "../../../assets/drs.json"; //homie get it from context
 import { DrHomeItem } from "../../components/DrHomeItem";
-import { Speciality } from "../../models";
+import { Appointement, Speciality } from "../../models";
 import { SpecialityItem } from "../../components/SpecialityItem";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useLocationContext } from "../../contexts/LocationContext";
+import { styled } from "styled-components/native";
+import { colors } from "../../infrastructure/theme/colors";
 
-const appointements = [
-  {
-    date: "Fiday, April 25, 8:00AM-8:30AM",
-    status: "ACTIVE",
-    drId: "someId",
-    patientId: "someOtherId",
-  },
-  {
-    date: "Wednesday, April 28, 8:00AM-8:30AM",
-    status: "ACTIVE",
-    drId: "someId",
-    patientId: "someOtherId",
-  },
-  {
-    date: "Monday, August 01, 01:00PM-01:30PM",
-    status: "ACTIVE",
-    drId: "someId",
-    patientId: "someOtherId",
-  },
-];
-const HomeScreen = () => {
-  // const { dbUser } = useAuthContext();
-  const dbUser = { username: "Tapoka", address: "602 Howell Plaza" };
-  const [searchQuery, setSearchQuery] = React.useState("");
+const SearchContainer = styled.Pressable`
+  border-radius: 10px;
+  background-color: ${colors.disabled};
+  padding: 5px;
+  width: 100%;
+`;
+const HomeScreen = ({ navigation }) => {
+  const { dbUser } = useAuthContext();
+  const { drs, location } = useLocationContext();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [appointements, setAppointements] = useState([]);
+
   const onChangeSearch = (query) => setSearchQuery(query);
   const specialtiesArray = Object.values(Speciality).slice(0, 6);
   //navigation.navigate(SearchScreen, {searchQuery:searchQuery})
+
+  //maybe refractor to a context------------------------------------------------
+  useEffect(() => {
+    DataStore.query(Appointement, (app) => app.patientID.eq(dbUser.id)).then(
+      setAppointements
+    );
+  }, []);
+  //------------------------------------------------
+
   return (
     <ThemeScroll>
       <Spacer size={3} />
-      <TitleText>Hello {dbUser?.username}</TitleText>
+      <TitleText>Bonjours {dbUser?.username}</TitleText>
       <SubtitleText>City :{dbUser?.address}</SubtitleText>
-      {/* <Searchbar
-        placeholder="Search"
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-      /> */}
+      <SearchContainer>
+        <SubtitleText>Search</SubtitleText>
+      </SearchContainer>
       {!!appointements.length && (
         <>
           <TitleText>My appointements</TitleText>
@@ -68,7 +67,9 @@ const HomeScreen = () => {
           <TitleText>Top Doctors</TitleText>
           <FlatList
             data={drs}
-            renderItem={({ item }) => <DrHomeItem dr={item} />}
+            renderItem={({ item }) => (
+              <DrHomeItem dr={item} navigation={navigation} />
+            )}
             // keyExtractor={(item) => item.id}
             horizontal
           />

@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { DataStore } from "aws-amplify";
 import {
   RowContainer,
-  Spacer,
   SubtitleText,
   TitleText,
 } from "../../infrastructure/theme";
@@ -18,6 +18,7 @@ import { ReviewItem } from "../../components/ReviewItem";
 import { colors } from "../../infrastructure/theme/colors";
 import { fontWeights } from "../../infrastructure/theme/fonts";
 import BookingButtons from "../../components/BookingButtons";
+import { Review } from "../../models";
 const { width, height } = Dimensions.get("window");
 const InfoIcon = ({ icon, label, text }) => (
   <View
@@ -46,46 +47,52 @@ const Link = ({ text, onPress }) => (
   </TouchableOpacity>
 );
 //Refractor it to a context
-// const fetchLimitedReviews = async () => {
-//   try {
-//     const limitedReviews = await DataStore.query(Review, (r) => r, {
-//       limit: 2, // Fetch only 2 reviews
-//     });
-//     setReviews(limitedReviews);
-//   } catch (error) {
-//     console.error("Error fetching reviews:", error);
-//   }
-// };
-// const fetchAllReviews = async () => {
-//   try {
-//     const allReviews = await DataStore.query(Review);
-//     setReviews(allReviews);
-//     setShowAllReviews(true);
-//   } catch (error) {
-//     console.error("Error fetching reviews:", error);
-//   }
-// };
-// useEffect(() => {
-//   fetchLimitedReviews();
-// }, []);
 
-const DrProfileScreen = ({ navigation, route, dr }) => {
-  // const dr = route?.params.dr;
+const DrProfileScreen = ({ navigation, route }) => {
+  const dr = route?.params.dr;
   const [showAllReviews, setShowAllReviews] = useState(false);
-  const [seeMore, setSeeMore] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const [reviews, setReviews] = useState(dataReviews.slice(0, 2));
-  const fetchAllReviews = (show) => {
-    setReviews(show ? dataReviews : dataReviews.slice(0, 2));
-    setShowAllReviews(true);
+
+  const fetchLimitedReviews = async () => {
+    try {
+      const limitedReviews = await DataStore.query(
+        Review,
+        (rv) => rv.consultantID.eq(dr.id),
+        {
+          limit: 2, // Fetch only 2 reviews
+        }
+      );
+      setReviews(limitedReviews);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
   };
-  const toggleDescription = () => {
-    setSeeMore(!seeMore);
+  const fetchAllReviews = async () => {
+    try {
+      const allReviews = await DataStore.query(Review, (rv) =>
+        rv.consultantID.eq(dr.id)
+      );
+      setReviews(allReviews);
+      setShowAllReviews(true);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+  useEffect(() => {
+    fetchLimitedReviews();
+  }, []);
+  // const fetchAllReviews = (show) => {
+  //   setReviews(show ? dataReviews : dataReviews.slice(0, 2));
+  //   setShowAllReviews(true);
+  // };
+  const toggleShowAll = () => {
+    setShowAll((prevShowAll) => !prevShowAll);
   };
   const toggleReview = () => {
-    fetchAllReviews(!showAllReviews);
-    setShowAllReviews(!showAllReviews);
+    showAllReviews ? fetchAllReviews() : setReviews(reviews?.slice(0, 2));
+    setShowAllReviews((sow) => !sow);
   };
-  const score = parseFloat(dr?.score).toFixed(1); // remove parseFolat homie
   return (
     <View style={{ flex: 1, backgroundColor: "blue" }}>
       <View style={{ flex: 1, backgroundColor: "red" }}>
@@ -105,7 +112,7 @@ const DrProfileScreen = ({ navigation, route, dr }) => {
           flex: 1,
           position: "absolute",
           top: height / 3,
-          width,
+          width: width,
           maxHeight: height / 1.55,
           backgroundColor: colors.background,
           borderTopLeftRadius: 25,
@@ -136,7 +143,11 @@ const DrProfileScreen = ({ navigation, route, dr }) => {
             label={`+${dr.experience} ans`}
             text="Experience"
           />
-          <InfoIcon icon="star-circle" label={score} text="Notation" />
+          <InfoIcon
+            icon="star-circle"
+            label={parseFloat(dr?.score).toFixed(1)}
+            text="Notation"
+          />
           <InfoIcon
             icon="comment-processing"
             label={reviews?.length}
@@ -151,11 +162,21 @@ const DrProfileScreen = ({ navigation, route, dr }) => {
           ) : null}
         </RowContainer>
         <TitleText>A propos de Moi: </TitleText>
-        <Text numberOfLines={seeMore ? undefined : 2}>{dr.descreprtion}</Text>
+        {/* <Text numberOfLines={seeMore ? undefined : 2}>{dr.descreprtion}</Text>
         <Link
           onPress={toggleDescription}
           text={seeMore ? "Voir Moins" : "Voir Plus"}
-        />
+        /> */}
+        <View>
+          <Text numberOfLines={showAll ? undefined : 2}>{dr.descreprtion}</Text>
+          {dr.descreprtion.length > 200 && (
+            <TouchableOpacity onPress={toggleShowAll}>
+              <Text style={{ color: "blue", marginTop: 5 }}>
+                {showAll ? "View Less" : "View More"}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
         <TitleText>Working Time</TitleText>
         <Text>{dr.working_day + " " + dr.working_time}</Text>
         <TitleText>Cost</TitleText>

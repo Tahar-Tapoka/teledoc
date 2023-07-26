@@ -2,6 +2,12 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const Service = {
+  "VIDEO": "VIDEO",
+  "CONSULTATION": "CONSULTATION",
+  "HOME": "HOME"
+};
+
 const Status = {
   "ACTIVE": "ACTIVE",
   "INACTIVE": "INACTIVE",
@@ -9,30 +15,39 @@ const Status = {
   "DISABLED": "DISABLED"
 };
 
+const Certificates = {
+  "DIALISE": "DIALISE",
+  "DIABETE": "DIABETE",
+  "ZICOMATI": "ZICOMATI",
+  "CHKOPOLOGIE": "CHKOPOLOGIE",
+  "KARAONI": "KARAONI",
+  "NICOLOGIE": "NICOLOGIE"
+};
+
 const Speciality = {
-  "MEDECINE_GENERALE": "MEDECINE_GENERALE",
-  "PEDIATRIE": "PEDIATRIE",
-  "GYNECOLOGIE": "GYNECOLOGIE",
-  "CARDIOLOGIE": "CARDIOLOGIE",
-  "DERMATOLOGIE": "DERMATOLOGIE",
-  "PSYCHIATRIE": "PSYCHIATRIE",
-  "ORTHOPEDIE": "ORTHOPEDIE",
-  "OPHTALMOLOGIE": "OPHTALMOLOGIE",
+  "GENERALISTE": "GENERALISTE",
+  "PEDIATRE": "PEDIATRE",
+  "GENICOLOGUE": "GENICOLOGUE",
+  "CARDIOLOGUE": "CARDIOLOGUE",
+  "DERMATOLOGUE": "DERMATOLOGUE",
+  "PSYCHIATRE": "PSYCHIATRE",
+  "ORTHOPEDISTE": "ORTHOPEDISTE",
+  "OPHTALMOLOGUE": "OPHTALMOLOGUE",
   "ORL": "ORL",
-  "NEUROLOGIE": "NEUROLOGIE",
-  "RADIOLOGIE": "RADIOLOGIE",
-  "ANESTHESIOLOGIE": "ANESTHESIOLOGIE",
-  "NEPHROLOGIE": "NEPHROLOGIE",
-  "PNEUMOLOGIE": "PNEUMOLOGIE",
-  "HEMATOLOGIE": "HEMATOLOGIE",
-  "ONCOLOGIE": "ONCOLOGIE",
-  "ENDOCRINOLOGIE": "ENDOCRINOLOGIE",
-  "GASTRO_ENTEROLOGIE": "GASTRO_ENTEROLOGIE",
-  "RHUMATOLOGIE": "RHUMATOLOGIE",
-  "REEDUCATION_FONCTIONNELLE": "REEDUCATION_FONCTIONNELLE",
-  "EUROLOGIE": "EUROLOGIE",
-  "NEURO_CHIRURGIE": "NEURO_CHIRURGIE",
-  "INFECTIOLOGIE": "INFECTIOLOGIE"
+  "NEUROLOGUE": "NEUROLOGUE",
+  "RADIOLOGUE": "RADIOLOGUE",
+  "ANESTHESIOLOGUE": "ANESTHESIOLOGUE",
+  "NEPHROLOGUE": "NEPHROLOGUE",
+  "PNEUMOLOGUE": "PNEUMOLOGUE",
+  "HEMATOLOGUE": "HEMATOLOGUE",
+  "ONCOLOGUE": "ONCOLOGUE",
+  "ENDOCRINOLOGUE": "ENDOCRINOLOGUE",
+  "GASTROLOGUE": "GASTROLOGUE",
+  "RHUMATOLOGUE": "RHUMATOLOGUE",
+  "REEDUCATIONISTE": "REEDUCATIONISTE",
+  "EUROLOGUE": "EUROLOGUE",
+  "NEURO_CHIRURGIEN": "NEURO_CHIRURGIEN",
+  "INFECTIOLOGUE": "INFECTIOLOGUE"
 };
 
 const Gender = {
@@ -40,14 +55,20 @@ const Gender = {
   "FEMALE": "FEMALE"
 };
 
-const { Review, Consultant, Patient, PatientConsultant } = initSchema(schema);
+const { Payement, Appointement, Certificate, Consultant, Review, Patient, ConsultantCertificate, PatientConsultant } = initSchema(schema);
 
 export {
-  Review,
+  Payement,
+  Appointement,
+  Certificate,
   Consultant,
+  Review,
   Patient,
+  ConsultantCertificate,
   PatientConsultant,
+  Service,
   Status,
+  Certificates,
   Speciality,
   Gender
 };

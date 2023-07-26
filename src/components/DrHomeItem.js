@@ -2,6 +2,7 @@ import styled from "styled-components/native";
 import { Rating } from "../infrastructure/theme";
 import { colors } from "../infrastructure/theme/colors";
 import { fontWeights } from "../infrastructure/theme/fonts";
+import { CompactDrInfo } from "./CompactDrInfo";
 //refractor??
 const CompactImage = styled.Image`
   border-radius: 100px;
@@ -33,16 +34,8 @@ const ReviewText = styled.Text`
 `;
 
 export const DrHomeItem = ({ dr, navigation }) => (
-  <Item
-    onPress={() =>
-      console.warn('navigation.navigate("DrProfileScreen", {dr: dr})')
-    }
-  >
+  <Item onPress={() => navigation.navigate("DrProfileScreen", { dr: dr })}>
     <CompactImage source={{ uri: dr.picture }} />
-    <ReviewerName>Dr. {dr.full_name}</ReviewerName>
-    <ReviewText>
-      {dr.speciality.charAt(0) + dr.speciality.slice(1).toLowerCase()}
-    </ReviewText>
-    <Rating rating={parseFloat(dr.score).toFixed(1)} />
+    <CompactDrInfo dr={dr} />
   </Item>
 );

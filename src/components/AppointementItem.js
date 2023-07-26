@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
+import { styled } from "styled-components/native";
+import { Dimensions, View } from "react-native";
 import { DataStore } from "aws-amplify";
-import { Consultant, Patient } from "../models";
-import { Avatar } from "react-native-paper";
+import { Consultant } from "../models";
+
 import { RowContainer } from "../infrastructure/theme";
 import { colors } from "../infrastructure/theme/colors";
-import { AirbnbRating } from "react-native-ratings";
-import { styled } from "styled-components/native";
 import { fontWeights } from "../infrastructure/theme/fonts";
-const { width, height } = Dimensions.get("window");
+import { formatDate, formatUpperCase } from "../functions";
 
-import drs from "../../assets/drs.json"; // homie
-import { Dimensions, View } from "react-native";
-import { DrImage } from "./DrItem";
+const { width } = Dimensions.get("window");
 
+//maybe refractor some of these styles------------------------------------------------
 const ReviewContainer = styled.View`
   border-radius: 10px;
   elevation: 2;
@@ -41,26 +40,38 @@ const ReviewText = styled.Text`
   margin: 2px;
 `;
 
+const DrImage = styled.Image`
+  border-radius: 10px;
+  width: 70px;
+  height: 100px;
+  margin-right: 20px;
+`;
+//----------------------------------------------------------------------------
+
 export const AppointementItem = ({ appointement }) => {
   //maybe refractor to a context------------------------------------------------
-  const [dr, setDr] = useState(drs[0]);
-  //   useEffect(() => {
-  //     if (appointement)
-  //       DataStore.query(Consultant, appointement.drID).then(setDr);
-  //   }, [appointement]);
+  const [dr, setDr] = useState();
+  useEffect(() => {
+    DataStore.query(Consultant, appointement.consultantID).then(setDr);
+  }, [appointement]);
   //----------------------------------------------------------------------------
+
   return (
     <ReviewContainer>
-      <RowContainer>
-        <DrImage source={{ uri: dr.picture }} />
-        <View>
-          <ReviewerName>Dr.{dr?.full_name}</ReviewerName>
-          <ReviewText>{dr?.speciality}</ReviewText>
-          <ReviewText>{dr?.address}</ReviewText>
-        </View>
-      </RowContainer>
+      {dr && (
+        <RowContainer>
+          <DrImage source={{ uri: dr.picture }} />
+          <View>
+            <ReviewerName>Dr.{dr.full_name}</ReviewerName>
+            <ReviewText>{formatUpperCase(dr.speciality)}</ReviewText>
+            <ReviewText>{dr.address}</ReviewText>
+          </View>
+        </RowContainer>
+      )}
       <DateContainer>
-        <ReviewerName>{appointement.date}</ReviewerName>
+        <ReviewerName>
+          {formatDate(appointement?.date, appointement?.time)}
+        </ReviewerName>
       </DateContainer>
     </ReviewContainer>
   );

@@ -1,3 +1,46 @@
+enum Service {
+  VIDEO
+  CONSULTATION
+  HOME
+}
+
+type Payement @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  amount: Int
+  payement_proof: String
+  status: Status
+  consultantID: ID! @index(name: "byConsultant")
+  patientID: ID! @index(name: "byPatient")
+}
+
+type Appointement @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  time: AWSTime
+  date: AWSDate
+  status: Status
+  amount: Int
+  Payement: Payement @hasOne
+  consultantID: ID! @index(name: "byConsultant")
+  patientID: ID! @index(name: "byPatient")
+  service: Service
+}
+
+type Certificate @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: Certificates
+  color: String
+  consultants: [Consultant] @manyToMany(relationName: "ConsultantCertificate")
+}
+
+enum Certificates {
+  DIALISE
+  DIABETE
+  ZICOMATI
+  CHKOPOLOGIE
+  KARAONI
+  NICOLOGIE
+}
+
 enum Status {
   ACTIVE
   INACTIVE
@@ -14,29 +57,29 @@ type Review @model @auth(rules: [{allow: public}]) {
 }
 
 enum Speciality {
-  MEDECINE_GENERALE
-  PEDIATRIE
-  GYNECOLOGIE
-  CARDIOLOGIE
-  DERMATOLOGIE
-  PSYCHIATRIE
-  ORTHOPEDIE
-  OPHTALMOLOGIE
+  GENERALISTE
+  PEDIATRE
+  GENICOLOGUE
+  CARDIOLOGUE
+  DERMATOLOGUE
+  PSYCHIATRE
+  ORTHOPEDISTE
+  OPHTALMOLOGUE
   ORL
-  NEUROLOGIE
-  RADIOLOGIE
-  ANESTHESIOLOGIE
-  NEPHROLOGIE
-  PNEUMOLOGIE
-  HEMATOLOGIE
-  ONCOLOGIE
-  ENDOCRINOLOGIE
-  GASTRO_ENTEROLOGIE
-  RHUMATOLOGIE
-  REEDUCATION_FONCTIONNELLE
-  EUROLOGIE
-  NEURO_CHIRURGIE
-  INFECTIOLOGIE
+  NEUROLOGUE
+  RADIOLOGUE
+  ANESTHESIOLOGUE
+  NEPHROLOGUE
+  PNEUMOLOGUE
+  HEMATOLOGUE
+  ONCOLOGUE
+  ENDOCRINOLOGUE
+  GASTROLOGUE
+  RHUMATOLOGUE
+  REEDUCATIONISTE
+  EUROLOGUE
+  NEURO_CHIRURGIEN
+  INFECTIOLOGUE
 }
 
 type Consultant @model @auth(rules: [{allow: public}]) {
@@ -57,6 +100,13 @@ type Consultant @model @auth(rules: [{allow: public}]) {
   status: Status
   Reviews: [Review] @hasMany(indexName: "byConsultant", fields: ["id"])
   patients: [Patient] @manyToMany(relationName: "PatientConsultant")
+  cost: Int
+  experience: Int
+  working_time: String
+  working_day: String
+  Certificates: [Certificate] @manyToMany(relationName: "ConsultantCertificate")
+  Payements: [Payement] @hasMany(indexName: "byConsultant", fields: ["id"])
+  Appointements: [Appointement] @hasMany(indexName: "byConsultant", fields: ["id"])
 }
 
 enum Gender {
@@ -79,5 +129,8 @@ type Patient @model @auth(rules: [{allow: public}]) {
   username: String
   Reviews: [Review] @hasMany(indexName: "byPatient", fields: ["id"])
   Consultants: [Consultant] @manyToMany(relationName: "PatientConsultant")
+  status: Status
+  Payements: [Payement] @hasMany(indexName: "byPatient", fields: ["id"])
+  Appointements: [Appointement] @hasMany(indexName: "byPatient", fields: ["id"])
 }
  
