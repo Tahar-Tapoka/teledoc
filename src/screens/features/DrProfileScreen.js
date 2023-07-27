@@ -18,7 +18,8 @@ import { ReviewItem } from "../../components/ReviewItem";
 import { colors } from "../../infrastructure/theme/colors";
 import { fontWeights } from "../../infrastructure/theme/fonts";
 import BookingButtons from "../../components/BookingButtons";
-import { Review } from "../../models";
+import { Certificate, ConsultantCertificate, Review } from "../../models";
+import { formatUpperCase } from "../../functions";
 const { width, height } = Dimensions.get("window");
 const InfoIcon = ({ icon, label, text }) => (
   <View
@@ -46,52 +47,81 @@ const Link = ({ text, onPress }) => (
     </Text>
   </TouchableOpacity>
 );
-//Refractor it to a context
 
 const DrProfileScreen = ({ navigation, route }) => {
-  const dr = route?.params.dr;
+  const dr = route.params.dr;
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [showAll, setShowAll] = useState(false);
-  const [reviews, setReviews] = useState(dataReviews.slice(0, 2));
+  const [allReviews, setAllReviews] = useState();
+  const [reviews, setReviews] = useState();
+  const [certificates, setCertificates] = useState([]);
 
-  const fetchLimitedReviews = async () => {
-    try {
-      const limitedReviews = await DataStore.query(
-        Review,
-        (rv) => rv.consultantID.eq(dr.id),
-        {
-          limit: 2, // Fetch only 2 reviews
-        }
-      );
-      setReviews(limitedReviews);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    }
-  };
-  const fetchAllReviews = async () => {
-    try {
-      const allReviews = await DataStore.query(Review, (rv) =>
-        rv.consultantID.eq(dr.id)
-      );
-      setReviews(allReviews);
-      setShowAllReviews(true);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    }
-  };
+  // const consultantCertificates = dr.Certificates.values._j._j;
+
+  // const revs = dr?.Reviews?.values?._j._j?.slice(0, 2);
+
+  //Refractor it to a context-----------------------------------------------
+
   useEffect(() => {
-    fetchLimitedReviews();
-  }, []);
-  // const fetchAllReviews = (show) => {
-  //   setReviews(show ? dataReviews : dataReviews.slice(0, 2));
-  //   setShowAllReviews(true);
+    // Get the associated ConsultantCertificates objects for the given consultant
+    DataStore.query(ConsultantCertificate, (cc) =>
+      cc.consultantId.eq(dr.id)
+    ).then((consultantCertificates) => {
+      // Get the Certificate objects based on the ConsultantCertificates
+      const certificateIds = consultantCertificates.map(
+        (cc) => cc.certificateId
+      );
+      const certificatePromises = certificateIds.map((certificateId) =>
+        DataStore.query(Certificate, certificateId)
+      );
+
+      Promise.all(certificatePromises).then((certificates) => {
+        setCertificates(certificates);
+      });
+    });
+
+    DataStore.query(Review, (rv) => rv.consultantID.eq(dr.id)).then((rvs) => {
+      setAllReviews(rvs);
+      setReviews(rvs.slice(0, 2));
+    });
+  }, [dr.id]);
+
+  // const fetchLimitedReviews = async () => {
+  //   try {
+  //     const limitedReviews = await DataStore.query(
+  //       Review,
+  //       (rv) => rv.consultantID.eq(dr.id),
+  //       {
+  //         limit: 2, // Fetch only 2 reviews
+  //       }
+  //     );
+  //     setReviews(limitedReviews);
+  //   } catch (error) {
+  //     console.error("Error fetching reviews:", error);
+  //   }
   // };
+  // const fetchAllReviews = async () => {
+  //   try {
+  //     const allReviews = await DataStore.query(Review, (rv) =>
+  //       rv.consultantID.eq(dr.id)
+  //     );
+  //     setReviews(allReviews);
+  //     setShowAllReviews(true);
+  //   } catch (error) {
+  //     console.error("Error fetching reviews:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   fetchLimitedReviews();
+  // }, []);
+  //------------------------------------------------------------
+
   const toggleShowAll = () => {
     setShowAll((prevShowAll) => !prevShowAll);
   };
   const toggleReview = () => {
-    showAllReviews ? fetchAllReviews() : setReviews(reviews?.slice(0, 2));
-    setShowAllReviews((sow) => !sow);
+    setReviews(showAllReviews ? allReviews : allReviews.slice(0, 2));
+    setShowAllReviews((show) => !show);
   };
   return (
     <View style={{ flex: 1, backgroundColor: "blue" }}>
@@ -121,17 +151,17 @@ const DrProfileScreen = ({ navigation, route }) => {
         }}
       >
         <TitleText>Dr. {dr.full_name}</TitleText>
-        <DescriptionText>Specialiste en {dr.speciality}</DescriptionText>
-        {dr.certificates.length ? (
+        <DescriptionText>{formatUpperCase(dr.speciality)}</DescriptionText>
+        {!!certificates.length && (
           <RowContainer>
             <FlatList
-              data={dr.certificates}
+              data={certificates}
               renderItem={({ item }) => <Tag item={item} />}
               keyExtractor={(item) => item.name}
               horizontal
             />
           </RowContainer>
-        ) : null}
+        )}
         <RowContainer style={{ justifyContent: "space-evenly" }}>
           <InfoIcon
             icon="account-group"
@@ -153,13 +183,13 @@ const DrProfileScreen = ({ navigation, route }) => {
             label={reviews?.length}
             text="Avis"
           />
-          {dr.certificates.length ? (
+          {!!certificates.length && (
             <InfoIcon
               icon="certificate"
-              label={dr.certificates.length}
+              label={certificates.length}
               text="Certificats"
             />
-          ) : null}
+          )}
         </RowContainer>
         <TitleText>A propos de Moi: </TitleText>
         {/* <Text numberOfLines={seeMore ? undefined : 2}>{dr.descreprtion}</Text>
@@ -169,7 +199,7 @@ const DrProfileScreen = ({ navigation, route }) => {
         /> */}
         <View>
           <Text numberOfLines={showAll ? undefined : 2}>{dr.descreprtion}</Text>
-          {dr.descreprtion.length > 200 && (
+          {dr.descreprtion.length > 119 && (
             <TouchableOpacity onPress={toggleShowAll}>
               <Text style={{ color: "blue", marginTop: 5 }}>
                 {showAll ? "View Less" : "View More"}
@@ -181,7 +211,7 @@ const DrProfileScreen = ({ navigation, route }) => {
         <Text>{dr.working_day + " " + dr.working_time}</Text>
         <TitleText>Cost</TitleText>
         <Text>{dr.cost} DZD per 30min Consult</Text>
-        {reviews?.length ? (
+        {!!reviews?.length && (
           <>
             <View
               style={{
@@ -200,7 +230,7 @@ const DrProfileScreen = ({ navigation, route }) => {
               <ReviewItem review={review} key={review.id} />
             ))}
           </>
-        ) : null}
+        )}
       </ScrollView>
       <View
         style={{
