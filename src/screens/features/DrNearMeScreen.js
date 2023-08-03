@@ -11,6 +11,7 @@ import {
   Spacer,
   SubtitleText,
 } from "../../infrastructure/theme";
+import { formatUpperCase } from "../../functions";
 
 const DrNearMeScreen = ({ navigation }) => {
   const { drs, location } = useLocationContext();
@@ -71,7 +72,7 @@ const DrNearMeScreen = ({ navigation }) => {
             {filteredDrs[0] && (
               <Spacer size={2}>
                 <SubtitleText style={{ alignSelf: "center", fontWeight: 600 }}>
-                  Other {selectedDr.speciality} Drs in the area
+                  Other {formatUpperCase(selectedDr.speciality)} in the area
                 </SubtitleText>
               </Spacer>
             )}

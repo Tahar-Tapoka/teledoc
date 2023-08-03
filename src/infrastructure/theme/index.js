@@ -19,7 +19,6 @@ export const theme = {
 
 export const ThemeButton = styled(Button).attrs({
   mode: "contained",
-  // textColor: "#F1F1F1",
 })`
   width: 80%;
   margin: ${space[1]}px;

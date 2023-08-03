@@ -5,8 +5,8 @@ import { colors } from "../infrastructure/theme/colors";
 
 const onVideoConsult = () => console.warn("Book Video Consult");
 const onBookAppointement = () => console.warn("Book an Appointement");
-const BookingButtons = () => (
-  <RowContainer style={{ flexWrap: "wrap", marginVertical: 5 }}>
+const BookingButtons = ({ style }) => (
+  <RowContainer style={{ ...style, flexWrap: "wrap", marginVertical: 5 }}>
     <ThemeButton
       onPress={onVideoConsult}
       icon="message-video"
