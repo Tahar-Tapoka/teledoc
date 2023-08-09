@@ -15,7 +15,7 @@ const Item = styled.View`
   width: 140px;
   align-items: center;
   border-radius: 10px;
-  background-color: ${colors.onSurface};
+  background-color: ${colors.card};
 `;
 const ReviewerName = styled.Text`
   color: ${colors.accent};

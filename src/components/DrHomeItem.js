@@ -20,7 +20,7 @@ const Item = styled.Pressable`
   width: 140px;
   height: 160px;
   border-radius: 10px;
-  background-color: ${colors.onSurface};
+  background-color: ${colors.card};
 `;
 
 const ReviewerName = styled.Text`

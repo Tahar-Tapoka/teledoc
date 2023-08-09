@@ -12,7 +12,7 @@ import { formatDate, formatUpperCase } from "../functions";
 const { width } = Dimensions.get("window");
 
 //maybe refractor some of these styles------------------------------------------------
-const ReviewContainer = styled.View`
+const ReviewContainer = styled.TouchableOpacity`
   border-radius: 10px;
   elevation: 2;
   background-color: ${colors.surface};
@@ -46,9 +46,20 @@ const DrImage = styled.Image`
   height: 100px;
   margin-right: 20px;
 `;
+
+export const AppDrInfo = ({ dr }) => (
+  <RowContainer>
+    <DrImage source={{ uri: dr.picture }} />
+    <View>
+      <ReviewerName>Dr.{dr.full_name}</ReviewerName>
+      <ReviewText>{formatUpperCase(dr.speciality)}</ReviewText>
+      <ReviewText>{dr.address}</ReviewText>
+    </View>
+  </RowContainer>
+);
 //----------------------------------------------------------------------------
 
-export const AppointementItem = ({ appointement }) => {
+export const AppointementItem = ({ appointement, navigation }) => {
   //maybe refractor to a context------------------------------------------------
   const [dr, setDr] = useState();
   useEffect(() => {
@@ -57,17 +68,15 @@ export const AppointementItem = ({ appointement }) => {
   //----------------------------------------------------------------------------
 
   return (
-    <ReviewContainer>
-      {dr && (
-        <RowContainer>
-          <DrImage source={{ uri: dr.picture }} />
-          <View>
-            <ReviewerName>Dr.{dr.full_name}</ReviewerName>
-            <ReviewText>{formatUpperCase(dr.speciality)}</ReviewText>
-            <ReviewText>{dr.address}</ReviewText>
-          </View>
-        </RowContainer>
-      )}
+    <ReviewContainer
+      onPress={() =>
+        navigation.navigate("AppointementScreen", {
+          appointement: appointement,
+          dr: dr,
+        })
+      }
+    >
+      {dr && <AppDrInfo dr={dr} />}
       <DateContainer>
         <ReviewerName>
           {formatDate(appointement?.date, appointement?.time)}

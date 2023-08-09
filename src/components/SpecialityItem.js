@@ -10,7 +10,7 @@ const CompactImage = styled.Image`
   height: 70px;
 `;
 
-const Item = styled.Pressable`
+const Item = styled.TouchableOpacity`
   flex: 1;
   elevation: 3;
   align-items: center;
@@ -20,7 +20,7 @@ const Item = styled.Pressable`
   width: 140px;
   height: 160px;
   border-radius: 10px;
-  background-color: ${colors.onSurface};
+  background-color: ${colors.card};
 `;
 
 const ReviewerName = styled.Text`
@@ -60,7 +60,9 @@ const specialityPic = {
   INFECTIOLOGUE: "https://cdn-icons-png.flaticon.com/512/4597/4597399.png",
 };
 export const SpecialityItem = ({ speciality, navigation }) => (
-  <Item onPress={() => console.warn(specialityPic[speciality])}>
+  <Item
+    onPress={() => navigation.navigate("SearchScreen", { query: speciality })}
+  >
     <CompactImage
       source={{
         uri: specialityPic[speciality],

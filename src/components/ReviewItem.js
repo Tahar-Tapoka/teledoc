@@ -11,7 +11,7 @@ import { fontWeights } from "../infrastructure/theme/fonts";
 const ReviewContainer = styled.View`
   border-radius: 10px;
   elevation: 2;
-  background-color: ${colors.onSurface};
+  background-color: ${colors.card};
   padding: 10px;
   margin-bottom: 3px;
 `;

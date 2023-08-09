@@ -3,18 +3,33 @@ import { colors } from "./colors";
 import { space, lineHeights } from "./spacing";
 import { sizes } from "./sizes";
 import { fonts, fontWeights, fontSizes } from "./fonts";
-import { Button, TextInput } from "react-native-paper";
+import { Button, DefaultTheme, TextInput } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export const theme = {
+  ...DefaultTheme,
+  dark: false,
   colors,
+  roundness: 2,
   space,
   lineHeights,
   sizes,
-  // fonts,
   fontSizes,
   fontWeights,
-  roundness: 2,
+  // fonts: {
+  //   regular: "Roboto-Regular",
+  //   medium: "Roboto-Medium",
+  // },
+  // dimensions: {
+  //   iconSize: 24,
+  //   buttonHeight: 48,
+  //   // ... other dimension properties
+  // },
+  // elevation: (level) => level * 2,
+  mode: "adaptive",
+  animation: {
+    scale: 1.0,
+  },
 };
 
 export const ThemeButton = styled(Button).attrs({
@@ -78,9 +93,10 @@ export const Spacer = styled.View`
   margin-vertical: ${(props) => space[props.size]}px;
 `;
 
-export const PostContainer = styled.View`
-  padding: 10px 20px;
-  width: 100%;
+export const HomeContainer = styled.View`
+  flex: 1;
+  padding: 10px;
+  background-color: ${colors.background};
 `;
 
 export const ThemeView = styled.View`

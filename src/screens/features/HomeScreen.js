@@ -1,39 +1,28 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
+import { Chip, Text } from "react-native-paper";
+import { useEffect, useState } from "react";
 import { DataStore } from "aws-amplify";
 
 import { AppointementItem } from "../../components/AppointementItem";
 import {
+  HomeContainer,
   RowContainer,
   Spacer,
-  SubtitleText,
-  ThemeScroll,
   TitleText,
 } from "../../infrastructure/theme";
-
 import { DrHomeItem } from "../../components/DrHomeItem";
 import { Appointement, Speciality } from "../../models";
 import { SpecialityItem } from "../../components/SpecialityItem";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useLocationContext } from "../../contexts/LocationContext";
-import { styled } from "styled-components/native";
-import { colors } from "../../infrastructure/theme/colors";
+import SearchComponent from "../../components/SearchComponent";
 
-const SearchContainer = styled.Pressable`
-  border-radius: 10px;
-  background-color: ${colors.disabled};
-  padding: 5px;
-  width: 100%;
-`;
 const HomeScreen = ({ navigation }) => {
   const { dbUser } = useAuthContext();
-  const { drs, location } = useLocationContext();
-  const [searchQuery, setSearchQuery] = useState("");
+  const { drs } = useLocationContext();
   const [appointements, setAppointements] = useState([]);
 
-  const onChangeSearch = (query) => setSearchQuery(query);
-  const specialtiesArray = Object.values(Speciality).slice(0, 6);
-  //navigation.navigate(SearchScreen, {searchQuery:searchQuery})
+  const specialtiesArray = Object.values(Speciality); //.slice(0, 6);
 
   //maybe refractor to a context------------------------------------------------
   useEffect(() => {
@@ -44,13 +33,15 @@ const HomeScreen = ({ navigation }) => {
   //------------------------------------------------
 
   return (
-    <ThemeScroll>
-      <Spacer size={3} />
-      <TitleText>Bonjours {dbUser?.username}</TitleText>
-      <SubtitleText>City :{dbUser?.address}</SubtitleText>
-      <SearchContainer>
-        <SubtitleText>Search</SubtitleText>
-      </SearchContainer>
+    <HomeContainer>
+      <Spacer size={2} />
+      <RowContainer style={{ justifyContent: "space-between" }}>
+        <Text variant="bodyLarge">Bonjours {dbUser?.username}</Text>
+        <Chip icon="map-marker-account">City :{dbUser?.address}</Chip>
+      </RowContainer>
+
+      <SearchComponent navigation={navigation} />
+
       {!!appointements.length && (
         <>
           <TitleText>My appointements</TitleText>
@@ -58,39 +49,37 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
               data={appointements}
               renderItem={({ item }) => (
-                <AppointementItem appointement={item} />
+                <AppointementItem appointement={item} navigation={navigation} />
               )}
               keyExtractor={(item) => item.date}
               horizontal
             />
           </RowContainer>
-          <TitleText>Top Doctors</TitleText>
-          <FlatList
-            data={drs}
-            renderItem={({ item }) => (
-              <DrHomeItem dr={item} navigation={navigation} />
-            )}
-            // keyExtractor={(item) => item.id}
-            horizontal
-          />
-          <TitleText>Specialities</TitleText>
-          <FlatList
-            data={specialtiesArray}
-            renderItem={({ item }) => (
-              <SpecialityItem key={item} speciality={item} />
-            )}
-            keyExtractor={(item) => item}
-            horizontal
-          />
-          {/* {specialtiesArray.map((specialty) => (
-            <SpecialityItem key={specialty} speciality={specialty} />
-          ))} */}
         </>
       )}
-    </ThemeScroll>
+      <TitleText>Top Doctors</TitleText>
+      <FlatList
+        data={drs}
+        renderItem={({ item }) => (
+          <DrHomeItem dr={item} navigation={navigation} />
+        )}
+        horizontal
+      />
+      <TitleText>Specialities</TitleText>
+      <FlatList
+        data={specialtiesArray}
+        renderItem={({ item }) => (
+          <SpecialityItem
+            key={item}
+            speciality={item}
+            navigation={navigation}
+          />
+        )}
+        keyExtractor={(item) => item}
+        horizontal
+      />
+    </HomeContainer>
   );
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});
